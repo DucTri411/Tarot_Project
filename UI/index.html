@@ -29,12 +29,33 @@
     </div>
 
     <script>
+        function parseJwt (token) {
+            try {
+                return JSON.parse(atob(token.split('.')[1]));
+            } catch (e) {
+                return null;
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             const authNav = document.getElementById("authNav");
             const token = localStorage.getItem("token");
             const userStr = localStorage.getItem("user");
 
+            let isLoggedIn = false;
+
             if (token && userStr) {
+                const decodedToken = parseJwt(token);
+                if (decodedToken && decodedToken.exp * 1000 > Date.now()) {
+                    isLoggedIn = true;
+                } else {
+                    // Token expired
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                }
+            }
+
+            if (isLoggedIn) {
                 const user = JSON.parse(userStr);
                 authNav.innerHTML = `
                     <span class="navbar-text me-3">Xin chào, <strong>${user.username}</strong>!</span>

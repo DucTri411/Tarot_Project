@@ -57,7 +57,7 @@
                 }
             } catch (err) {
                 alertBox.className = "alert alert-danger";
-                alertBox.textContent = "Không thể kết nối đến máy chủ";
+                alertBox.innerHTML = "Không thể kết nối đến máy chủ. <br><small>Hãy đảm bảo bạn đã mở cmd và chạy lệnh <code>node app.js</code> trong thư mục backend.</small>";
             }
             alertBox.classList.remove("d-none");
         });
