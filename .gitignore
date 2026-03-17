@@ -1,0 +1,15 @@
+# Chặn thư mục rác
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Chặn file môi trường chứa pass
+.env
+
+# Chặn file logs
+*.log
+npm-debug.log*
+
+# Các file rác trên hệ điều hành
+.DS_Store
+Thumbs.db
