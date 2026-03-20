@@ -33,7 +33,7 @@ const TarotCardComponent = ({ drawn, onFlip, isAuth }) => {
     <div className="flex flex-col items-center gap-4 w-full max-w-xs mx-auto">
       {/* Nhãn vị trí */}
       <div className="text-center">
-        <span className="text-xs font-bold uppercase tracking-widest text-galaxy-light">{posIcons[drawn.position]} {posLabels[drawn.position]}</span>
+        <span className="text-sm font-bold uppercase tracking-widest text-galaxy-light">{posIcons[drawn.position]} {posLabels[drawn.position]}</span>
       </div>
 
       {/* Lá bài */}
@@ -45,7 +45,7 @@ const TarotCardComponent = ({ drawn, onFlip, isAuth }) => {
         <div className="absolute inset-0 [backface-visibility:hidden] rounded-2xl overflow-hidden border-2 border-galaxy-primary shadow-xl">
           <img src="/tarot/card_back.png" alt="Lá bài Tarot" className="w-full h-full object-cover" onError={(e) => { e.target.style.display='none'; e.target.parentElement.classList.add('bg-gradient-to-br','from-galaxy-secondary','to-galaxy-darkest'); }} />
           <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-            <p className="text-xs text-galaxy-light font-bold uppercase tracking-widest drop-shadow-lg">Lật bài</p>
+            <p className="text-sm text-galaxy-light font-bold uppercase tracking-widest drop-shadow-lg">Lật bài</p>
           </div>
         </div>
         {/* Mặt trước */}
@@ -70,14 +70,14 @@ const TarotCardComponent = ({ drawn, onFlip, isAuth }) => {
           </div>
 
           {/* Overlay tên lá bài */}
-          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3">
-            <h3 className={`text-sm font-bold text-center ${drawn.reversed ? 'text-rose-300' : 'text-white'}`}>
+          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+            <h3 className={`text-base font-bold text-center ${drawn.reversed ? 'text-rose-300' : 'text-white'}`}>
               {drawn.card.name}
-              {drawn.reversed && <span className="block text-[10px] text-rose-400 mt-0.5">⟲ Ngược</span>}
+              {drawn.reversed && <span className="block text-xs text-rose-400 mt-1">⟲ Ngược</span>}
             </h3>
-            <div className="flex flex-wrap justify-center gap-1 mt-1">
+            <div className="flex flex-wrap justify-center gap-1.5 mt-2">
               {drawn.card.keywords.slice(0, 3).map((kw, i) => (
-                <span key={i} className="text-[8px] bg-galaxy-primary/50 text-galaxy-light px-1.5 py-0.5 rounded-md">{kw}</span>
+                <span key={i} className="text-[10px] sm:text-xs bg-galaxy-primary/50 text-galaxy-light px-2 py-1 rounded-md">{kw}</span>
               ))}
             </div>
           </div>
@@ -94,38 +94,38 @@ const TarotCardComponent = ({ drawn, onFlip, isAuth }) => {
             <div className={`bg-galaxy-darkest p-4 rounded-xl border border-galaxy-primary/20 space-y-3 ${!isAuth ? 'blur-[4px] select-none opacity-50' : ''}`}>
               {/* Ý nghĩa chính */}
               <div>
-                <h4 className="text-sm font-bold text-galaxy-light mb-1">
+                <h4 className="text-base font-bold text-galaxy-light mb-2">
                   {drawn.reversed ? '⟲ Ý nghĩa ngược:' : '☀ Ý nghĩa thuận:'}
                 </h4>
-                <p className="text-xs text-gray-300 leading-relaxed">
+                <p className="text-sm text-gray-300 leading-relaxed">
                   {drawn.reversed ? drawn.card.reversedMeaning : drawn.card.uprightMeaning}
                 </p>
               </div>
               {/* Suit info cho Minor Arcana */}
               {suitInfo && (
-                <div className="bg-white/5 p-3 rounded-lg">
-                  <span className="text-[10px] font-bold text-galaxy-light uppercase">{suitInfo.element} — {suitInfo.theme}</span>
-                  <p className="text-[10px] text-gray-400 mt-1 leading-relaxed">{suitInfo.description}</p>
+                <div className="bg-white/5 p-4 rounded-lg">
+                  <span className="text-xs font-bold text-galaxy-light uppercase">{suitInfo.element} — {suitInfo.theme}</span>
+                  <p className="text-xs text-gray-400 mt-2 leading-relaxed">{suitInfo.description}</p>
                 </div>
               )}
               {/* Chi tiết 4 khía cạnh cho Major Arcana */}
               {detail && (
-                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
-                  <div className="bg-rose-500/10 p-2.5 rounded-lg">
-                    <span className="text-[10px] font-bold text-rose-300">❤ Tình yêu</span>
-                    <p className="text-[10px] text-gray-300 mt-1 leading-relaxed">{detail.love}</p>
+                <div className="grid grid-cols-2 gap-3 pt-3 border-t border-white/10">
+                  <div className="bg-rose-500/10 p-3 rounded-lg">
+                    <span className="text-xs font-bold text-rose-300">❤ Tình yêu</span>
+                    <p className="text-xs text-gray-300 mt-1.5 leading-relaxed">{detail.love}</p>
                   </div>
-                  <div className="bg-blue-500/10 p-2.5 rounded-lg">
-                    <span className="text-[10px] font-bold text-blue-300">💼 Sự nghiệp</span>
-                    <p className="text-[10px] text-gray-300 mt-1 leading-relaxed">{detail.career}</p>
+                  <div className="bg-blue-500/10 p-3 rounded-lg">
+                    <span className="text-xs font-bold text-blue-300">💼 Sự nghiệp</span>
+                    <p className="text-xs text-gray-300 mt-1.5 leading-relaxed">{detail.career}</p>
                   </div>
-                  <div className="bg-emerald-500/10 p-2.5 rounded-lg">
-                    <span className="text-[10px] font-bold text-emerald-300">💰 Tài chính</span>
-                    <p className="text-[10px] text-gray-300 mt-1 leading-relaxed">{detail.finance}</p>
+                  <div className="bg-emerald-500/10 p-3 rounded-lg">
+                    <span className="text-xs font-bold text-emerald-300">💰 Tài chính</span>
+                    <p className="text-xs text-gray-300 mt-1.5 leading-relaxed">{detail.finance}</p>
                   </div>
-                  <div className="bg-amber-500/10 p-2.5 rounded-lg">
-                    <span className="text-[10px] font-bold text-amber-300">🏥 Sức khỏe</span>
-                    <p className="text-[10px] text-gray-300 mt-1 leading-relaxed">{detail.health}</p>
+                  <div className="bg-amber-500/10 p-3 rounded-lg">
+                    <span className="text-xs font-bold text-amber-300">🏥 Sức khỏe</span>
+                    <p className="text-xs text-gray-300 mt-1.5 leading-relaxed">{detail.health}</p>
                   </div>
                 </div>
               )}
@@ -295,17 +295,17 @@ const Tarot = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white/5 p-5 rounded-xl">
-                  <h3 className="text-sm font-bold text-white mb-2">⚡ Năng Lượng Chủ Đạo</h3>
-                  <p className="text-xs text-gray-300 leading-relaxed">{synthesis.energy}</p>
+                  <h3 className="text-base font-bold text-white mb-2">⚡ Năng Lượng Chủ Đạo</h3>
+                  <p className="text-sm text-gray-300 leading-relaxed">{synthesis.energy}</p>
                 </div>
                 <div className="bg-white/5 p-5 rounded-xl">
-                  <h3 className="text-sm font-bold text-white mb-2">🌊 Tâm Trạng Tổng Thể</h3>
-                  <p className="text-xs text-gray-300 leading-relaxed">{synthesis.mood}</p>
+                  <h3 className="text-base font-bold text-white mb-2">🌊 Tâm Trạng Tổng Thể</h3>
+                  <p className="text-sm text-gray-300 leading-relaxed">{synthesis.mood}</p>
                 </div>
               </div>
-              <div className="bg-galaxy-primary/10 border-l-4 border-galaxy-light p-5 rounded-r-xl">
-                <h3 className="text-sm font-bold text-galaxy-light mb-2">💫 Lời Khuyên</h3>
-                <p className="text-xs text-gray-300 leading-relaxed">{synthesis.advice}</p>
+              <div className="bg-galaxy-primary/10 border-l-4 border-galaxy-light p-6 rounded-r-xl">
+                <h3 className="text-base font-bold text-galaxy-light mb-2">💫 Lời Khuyên</h3>
+                <p className="text-sm text-gray-300 leading-relaxed">{synthesis.advice}</p>
               </div>
             </div>
           </div>
