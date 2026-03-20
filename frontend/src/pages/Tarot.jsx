@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { drawThreeCards, generateSynthesis } from '../utils/tarotData';
+import { getDetailForMajor, SUIT_THEMES } from '../utils/tarotDetails';
 
 /* ──────────────────────────────────────────── */
 /*  BlurOverlay: Lớp phủ yêu cầu đăng nhập     */
@@ -41,43 +42,97 @@ const TarotCardComponent = ({ drawn, onFlip, isAuth }) => {
         className={`relative w-44 h-72 rounded-2xl cursor-pointer transition-all duration-700 [transform-style:preserve-3d] ${drawn.flipped ? '[transform:rotateY(180deg)]' : 'hover:scale-105 hover:shadow-2xl hover:shadow-galaxy-primary/40'}`}
       >
         {/* Mặt sau */}
-        <div className="absolute inset-0 [backface-visibility:hidden] bg-gradient-to-br from-galaxy-secondary to-galaxy-darkest border-2 border-galaxy-primary rounded-2xl flex items-center justify-center shadow-xl">
-          <div className="text-center">
-            <div className="text-5xl mb-2">🌙</div>
-            <p className="text-xs text-galaxy-light font-bold uppercase tracking-widest">Lật bài</p>
+        <div className="absolute inset-0 [backface-visibility:hidden] rounded-2xl overflow-hidden border-2 border-galaxy-primary shadow-xl">
+          <img src="/tarot/card_back.png" alt="Lá bài Tarot" className="w-full h-full object-cover" onError={(e) => { e.target.style.display='none'; e.target.parentElement.classList.add('bg-gradient-to-br','from-galaxy-secondary','to-galaxy-darkest'); }} />
+          <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+            <p className="text-xs text-galaxy-light font-bold uppercase tracking-widest drop-shadow-lg">Lật bài</p>
           </div>
         </div>
         {/* Mặt trước */}
-        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-galaxy-dark to-galaxy-darkest border-2 border-galaxy-light/50 rounded-2xl flex flex-col items-center justify-center p-4 shadow-xl">
-          <div className={`text-4xl mb-2 ${drawn.reversed ? 'rotate-180' : ''}`}>
-            {drawn.card.arcana === 'major' ? '🌟' : drawn.card.suit === 'wands' ? '🔥' : drawn.card.suit === 'cups' ? '💧' : drawn.card.suit === 'swords' ? '💨' : '🪙'}
+        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-2xl overflow-hidden border-2 border-galaxy-light/50 shadow-xl">
+          {/* Ảnh lá bài - Hiển thị cho tất cả các lá */}
+          <img 
+            src={`/tarot/${drawn.card.id}.png`} 
+            alt={drawn.card.name} 
+            className={`w-full h-full object-cover ${drawn.reversed ? 'rotate-180' : ''}`}
+            onError={(e) => {
+              // Nếu không có ảnh, ẩn ảnh và hiển thị fallback emoji
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+          
+          {/* Fallback UI (Emoji) - Ẩn mặc định, hiện khi img lỗi */}
+          <div style={{ display: 'none' }} className="w-full h-full bg-gradient-to-br from-galaxy-dark to-galaxy-darkest flex flex-col items-center justify-center p-4">
+            <div className={`text-4xl mb-2 ${drawn.reversed ? 'rotate-180' : ''}`}>
+              {drawn.card.arcana === 'major' ? '🌟' : drawn.card.suit === 'wands' ? '🔥' : drawn.card.suit === 'cups' ? '💧' : drawn.card.suit === 'swords' ? '💨' : '🪙'}
+            </div>
           </div>
-          <h3 className={`text-sm font-bold text-white text-center ${drawn.reversed ? 'text-rose-300' : ''}`}>
-            {drawn.card.name}
-            {drawn.reversed && <span className="block text-[10px] text-rose-400 mt-1">⟲ Ngược</span>}
-          </h3>
-          <div className="flex flex-wrap justify-center gap-1 mt-2">
-            {drawn.card.keywords.slice(0, 3).map((kw, i) => (
-              <span key={i} className="text-[9px] bg-galaxy-primary/30 text-galaxy-light px-1.5 py-0.5 rounded-md">{kw}</span>
-            ))}
+
+          {/* Overlay tên lá bài */}
+          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+            <h3 className={`text-sm font-bold text-center ${drawn.reversed ? 'text-rose-300' : 'text-white'}`}>
+              {drawn.card.name}
+              {drawn.reversed && <span className="block text-[10px] text-rose-400 mt-0.5">⟲ Ngược</span>}
+            </h3>
+            <div className="flex flex-wrap justify-center gap-1 mt-1">
+              {drawn.card.keywords.slice(0, 3).map((kw, i) => (
+                <span key={i} className="text-[8px] bg-galaxy-primary/50 text-galaxy-light px-1.5 py-0.5 rounded-md">{kw}</span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Lời giải (hiển thị khi lật xong) */}
-      {drawn.flipped && (
-        <div className="relative w-full animate-fade-in-up">
-          {!isAuth && <BlurOverlay />}
-          <div className={`bg-galaxy-darkest p-4 rounded-xl border border-galaxy-primary/20 ${!isAuth ? 'blur-[4px] select-none opacity-50' : ''}`}>
-            <h4 className="text-sm font-bold text-galaxy-light mb-2">
-              {drawn.reversed ? '⟲ Ý nghĩa ngược:' : '☀ Ý nghĩa thuận:'}
-            </h4>
-            <p className="text-xs text-gray-300 leading-relaxed">
-              {drawn.reversed ? drawn.card.reversedMeaning : drawn.card.uprightMeaning}
-            </p>
+      {drawn.flipped && (() => {
+        const detail = drawn.card.arcana === 'major' ? getDetailForMajor(drawn.card.id) : null;
+        const suitInfo = drawn.card.suit ? SUIT_THEMES[drawn.card.suit] : null;
+        return (
+          <div className="relative w-full animate-fade-in-up">
+            {!isAuth && <BlurOverlay />}
+            <div className={`bg-galaxy-darkest p-4 rounded-xl border border-galaxy-primary/20 space-y-3 ${!isAuth ? 'blur-[4px] select-none opacity-50' : ''}`}>
+              {/* Ý nghĩa chính */}
+              <div>
+                <h4 className="text-sm font-bold text-galaxy-light mb-1">
+                  {drawn.reversed ? '⟲ Ý nghĩa ngược:' : '☀ Ý nghĩa thuận:'}
+                </h4>
+                <p className="text-xs text-gray-300 leading-relaxed">
+                  {drawn.reversed ? drawn.card.reversedMeaning : drawn.card.uprightMeaning}
+                </p>
+              </div>
+              {/* Suit info cho Minor Arcana */}
+              {suitInfo && (
+                <div className="bg-white/5 p-3 rounded-lg">
+                  <span className="text-[10px] font-bold text-galaxy-light uppercase">{suitInfo.element} — {suitInfo.theme}</span>
+                  <p className="text-[10px] text-gray-400 mt-1 leading-relaxed">{suitInfo.description}</p>
+                </div>
+              )}
+              {/* Chi tiết 4 khía cạnh cho Major Arcana */}
+              {detail && (
+                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
+                  <div className="bg-rose-500/10 p-2.5 rounded-lg">
+                    <span className="text-[10px] font-bold text-rose-300">❤ Tình yêu</span>
+                    <p className="text-[10px] text-gray-300 mt-1 leading-relaxed">{detail.love}</p>
+                  </div>
+                  <div className="bg-blue-500/10 p-2.5 rounded-lg">
+                    <span className="text-[10px] font-bold text-blue-300">💼 Sự nghiệp</span>
+                    <p className="text-[10px] text-gray-300 mt-1 leading-relaxed">{detail.career}</p>
+                  </div>
+                  <div className="bg-emerald-500/10 p-2.5 rounded-lg">
+                    <span className="text-[10px] font-bold text-emerald-300">💰 Tài chính</span>
+                    <p className="text-[10px] text-gray-300 mt-1 leading-relaxed">{detail.finance}</p>
+                  </div>
+                  <div className="bg-amber-500/10 p-2.5 rounded-lg">
+                    <span className="text-[10px] font-bold text-amber-300">🏥 Sức khỏe</span>
+                    <p className="text-[10px] text-gray-300 mt-1 leading-relaxed">{detail.health}</p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 };

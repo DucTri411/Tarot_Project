@@ -1,4 +1,4 @@
-# Đồ án AstroBunny (Thần Số Học & Tarot)
+# Dự án AstroBunny (Thần Số Học & Tarot)
 
 Dự án Web hỗ trợ tra cứu Thần Số Học và bốc bài Tarot hiển thị kết quả, được xây dựng với **React (Vite) + TailwindCSS v4** cho Frontend và **Node.js (Express)** cho Backend.
 
