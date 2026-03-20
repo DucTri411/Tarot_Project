@@ -1,19 +1,41 @@
-import { useState } from 'react';
-import {
-  calculateLifePath,
-  calculateAttitude,
-  calculateDestiny,
-  calculateSoulUrge,
-  calculatePersonality,
-  getNumberMeaning
-} from '../utils/numerology';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { generateFullReport } from '../utils/numerology';
+import { getCoreMeaning, MEANINGS } from '../utils/numerologyData';
+
+const BlurOverlay = () => (
+  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 bg-galaxy-darkest/60 backdrop-blur-[2px] rounded-2xl border border-galaxy-primary/30">
+    <div className="bg-galaxy-dark/90 p-6 rounded-xl border border-galaxy-secondary shadow-2xl shadow-galaxy-primary/20 text-center max-w-sm">
+      <div className="text-4xl mb-3">🔒</div>
+      <h3 className="text-xl font-bold text-galaxy-light mb-2">Nội Dung Độc Quyền</h3>
+      <p className="text-gray-300 text-sm mb-6 leading-relaxed">
+        Phần giải mã chi tiết và các biểu đồ chuyên sâu chỉ dành cho thành viên của AstroBunny. Đăng nhập ngay hoàn toàn miễn phí!
+      </p>
+      <div className="flex gap-3 justify-center">
+        <Link to="/login" className="px-5 py-2.5 bg-galaxy-primary hover:bg-galaxy-secondary text-white font-medium rounded-lg transition-all shadow-lg shadow-galaxy-primary/30">
+          Đăng Nhập
+        </Link>
+        <Link to="/register" className="px-5 py-2.5 bg-transparent border border-galaxy-light text-galaxy-light hover:bg-white/5 font-medium rounded-lg transition-all">
+          Đăng Ký
+        </Link>
+      </div>
+    </div>
+  </div>
+);
 
 const Numerology = () => {
   const [fullName, setFullName] = useState('');
   const [birthDate, setBirthDate] = useState('');
-  const [activeTab, setActiveTab] = useState('basic');
-  const [results, setResults] = useState(null);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [report, setReport] = useState(null);
   const [error, setError] = useState('');
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    // Check auth status
+    const token = localStorage.getItem('token');
+    setIsAuth(!!token);
+  }, []);
 
   const handleCalculate = (e) => {
     e.preventDefault();
@@ -23,206 +45,255 @@ const Numerology = () => {
     }
     setError('');
 
-    const lifePath = calculateLifePath(birthDate);
-    const attitude = calculateAttitude(birthDate);
-    const destiny = calculateDestiny(fullName);
-    const soulUrge = calculateSoulUrge(fullName);
-    const personality = calculatePersonality(fullName);
-
-    if (lifePath === 0 && attitude === 0 && destiny === 0 && soulUrge === 0 && personality === 0) {
-      setError('Không thể tính toán với thông tin đã nhập. Vui lòng kiểm tra lại.');
-      setResults(null);
+    const calcObj = generateFullReport(fullName, birthDate);
+    if (!calcObj.lifePath) {
+      setError('Lỗi khi tính toán. Vui lòng kiểm tra lại ngày sinh.');
       return;
     }
-
-    setResults({
-      lifePath,
-      attitude,
-      destiny,
-      soulUrge,
-      personality,
-      lifePathMeaning: getNumberMeaning(lifePath),
-      attitudeMeaning: getNumberMeaning(attitude),
-      destinyMeaning: getNumberMeaning(destiny),
-      soulUrgeMeaning: getNumberMeaning(soulUrge),
-      personalityMeaning: getNumberMeaning(personality),
-    });
+    setReport(calcObj);
+    setActiveTab('overview');
   };
 
-  const getLuckyDay = (destinyNum) => {
-    const days = ['Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy', 'Chủ nhật'];
-    const dayIndex = (destinyNum - 1) % 7;
-    const day = days[dayIndex];
-    return day === 'Chủ nhật' ? day : `Thứ ${day}`;
-  };
-
-  const getLuckyColor = (destinyNum) => {
-    const colors = ['Đỏ', 'Cam', 'Vàng', 'Xanh lá', 'Xanh dương', 'Tím', 'Hồng', 'Nâu', 'Trắng'];
-    return colors[(destinyNum - 1) % 9];
-  };
+  const tabs = [
+    { id: 'overview', label: 'TỔNG QUAN' },
+    { id: 'soul', label: 'LINH HỒN' },
+    { id: 'destiny', label: 'SỨ MỆNH' },
+    { id: 'charts', label: 'BIỂU ĐỒ' },
+    { id: 'cycles', label: 'CHU KỲ VẬN SỐ' },
+  ];
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-140px)] px-4 py-12">
-      
-      <div className="w-full max-w-4xl bg-galaxy-dark/40 border border-galaxy-primary/30 p-8 md:p-12 rounded-3xl shadow-2xl shadow-galaxy-primary/10">
+      <div className="w-full max-w-5xl bg-galaxy-dark/40 border border-galaxy-primary/30 p-6 md:p-10 rounded-3xl shadow-2xl shadow-galaxy-primary/10">
         
         <div className="text-center mb-10">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text mb-4">
-            Luận Giải Thần Số Học 🔢
+          <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text mb-4">
+            Báo Cáo Thần Số Học Toàn Diện
           </h1>
-          <p className="text-gray-400">Khám phá ý nghĩa các con số và giải mã vận mệnh của bạn qua lăng kính Pythagoras.</p>
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            Khám phá 10+ chỉ số chuyên sâu, biểu đồ ngày sinh và chu kỳ vận mệnh của bạn theo trường phái Pythagoras nguyên thủy.
+          </p>
         </div>
 
-        {!results ? (
+        {!report ? (
           <form onSubmit={handleCalculate} className="max-w-xl mx-auto space-y-6">
             {error && (
               <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-4 rounded-xl text-center text-sm">
                 {error}
               </div>
             )}
-            
             <div>
-              <label className="block text-gray-400 text-sm font-medium mb-2">
-                Họ và Tên Khai Sinh <span className="text-galaxy-light">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="VD: NGUYEN VAN A"
-                className="w-full px-4 py-3 bg-galaxy-darkest border border-galaxy-primary/50 text-white rounded-xl focus:outline-none focus:border-galaxy-light focus:ring-1 focus:ring-galaxy-light transition-all uppercase"
-              />
+              <label className="block text-gray-400 text-sm font-medium mb-2">Họ và Tên Khai Sinh <span className="text-galaxy-light">*</span></label>
+              <input type="text" required value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="VD: NGUYEN VAN A" className="w-full px-4 py-3 bg-galaxy-darkest border border-galaxy-primary/50 text-white rounded-xl focus:border-galaxy-light focus:ring-1 focus:ring-galaxy-light uppercase transition-all" />
             </div>
-
             <div>
-              <label className="block text-gray-400 text-sm font-medium mb-2">
-                Ngày Tháng Năm Sinh <span className="text-galaxy-light">*</span>
-              </label>
-              <input
-                type="date"
-                required
-                value={birthDate}
-                onChange={(e) => setBirthDate(e.target.value)}
-                className="w-full px-4 py-3 bg-galaxy-darkest border border-galaxy-primary/50 text-white rounded-xl focus:outline-none focus:border-galaxy-light focus:ring-1 focus:ring-galaxy-light transition-all"
-                style={{ colorScheme: 'dark' }}
-              />
+              <label className="block text-gray-400 text-sm font-medium mb-2">Ngày Tháng Năm Sinh <span className="text-galaxy-light">*</span></label>
+              <input type="date" required value={birthDate} onChange={(e) => setBirthDate(e.target.value)} className="w-full px-4 py-3 bg-galaxy-darkest border border-galaxy-primary/50 text-white rounded-xl focus:border-galaxy-light focus:ring-1 focus:ring-galaxy-light transition-all" style={{ colorScheme: 'dark' }} />
             </div>
-
-            <button
-              type="submit"
-              className="w-full py-4 mt-4 bg-gradient-to-r from-galaxy-primary to-galaxy-secondary hover:scale-[1.02] text-white font-bold text-lg rounded-xl shadow-lg shadow-galaxy-primary/20 transition-all duration-300"
-            >
-              Tra Cứu Các Chỉ Số ✨
+            <button type="submit" className="w-full py-4 mt-4 bg-gradient-to-r from-galaxy-primary to-galaxy-secondary hover:scale-[1.02] text-white font-bold text-lg rounded-xl shadow-lg transition-all">
+              Giải Mã Vận Mệnh ✨
             </button>
           </form>
         ) : (
           <div className="w-full space-y-8 animate-fade-in">
-            {/* Header Result */}
-            <div className="text-center p-6 bg-galaxy-darkest rounded-2xl border border-galaxy-primary/30">
-              <p className="text-gray-400 text-sm mb-1">Kết quả phân tích cho:</p>
-              <h2 className="text-2xl font-bold text-galaxy-light uppercase mb-1">{fullName}</h2>
-              <p className="text-gray-400 text-sm">Ngày sinh: {birthDate.split('-').reverse().join('/')}</p>
+            {/* Header Profile */}
+            <div className="flex flex-col md:flex-row justify-between items-center p-6 bg-galaxy-darkest rounded-2xl border border-galaxy-primary/30 gap-4">
+              <div>
+                <p className="text-gray-400 text-sm">Hồ sơ của:</p>
+                <h2 className="text-2xl font-bold text-galaxy-light uppercase">{fullName}</h2>
+              </div>
+              <div className="text-right">
+                <p className="text-gray-400 text-sm">Ngày sinh:</p>
+                <p className="text-xl font-medium text-white">{birthDate.split('-').reverse().join('/')}</p>
+              </div>
             </div>
 
-            {/* Custom Tabs */}
-            <div className="flex border-b border-border-default/20 overflow-x-auto hide-scrollbar">
-              {['basic', 'personality', 'destiny'].map((tab) => (
+            {/* View Tabs */}
+            <div className="flex flex-wrap border-b border-border-default/20">
+              {tabs.map((tab) => (
                 <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`flex-1 min-w-[120px] py-4 px-4 text-sm font-bold transition-all relative ${
-                    activeTab === tab ? 'text-galaxy-light' : 'text-gray-500 hover:text-gray-300'
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex-1 min-w-[140px] py-3 px-2 text-sm font-bold transition-all relative ${
+                    activeTab === tab.id ? 'text-galaxy-light' : 'text-gray-500 hover:text-gray-300'
                   }`}
                 >
-                  {tab === 'basic' ? 'CƠ BẢN' : tab === 'personality' ? 'TÍNH CÁCH' : 'SỨ MỆNH'}
-                  {activeTab === tab && (
-                    <span className="absolute bottom-0 left-0 w-full h-1 bg-galaxy-light rounded-t-md"></span>
-                  )}
+                  {tab.label}
+                  {activeTab === tab.id && <span className="absolute bottom-0 left-0 w-full h-1 bg-galaxy-light rounded-t-md"></span>}
                 </button>
               ))}
             </div>
 
-            {/* Tab: Cơ Bản */}
-            {activeTab === 'basic' && (
+            {/* TAB 1: TỔNG QUAN (Free cho mọi User) */}
+            {activeTab === 'overview' && (
               <div className="space-y-6 animate-fade-in-up">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30 hover:border-galaxy-secondary transition-all">
-                    <div className="text-4xl font-black text-white mb-2">{results.lifePath}</div>
-                    <div className="text-sm font-bold text-galaxy-light mb-1 uppercase">Số Chủ Đạo (Đường Đời)</div>
-                    <div className="text-gray-400 italic text-sm">{results.lifePathMeaning.title}</div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Đường đời */}
+                  <div className="md:col-span-2 bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <div className="text-sm font-bold text-galaxy-light uppercase">Số Chủ Đạo (Đường Đời)</div>
+                        <div className="text-gray-400 italic text-sm">{getCoreMeaning(report.lifePath).title}</div>
+                      </div>
+                      <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-galaxy-secondary">{report.lifePath}</div>
+                    </div>
+                    <p className="text-gray-300 text-justify leading-relaxed text-sm">{getCoreMeaning(report.lifePath).positive}</p>
+                    <p className="text-gray-400 text-justify leading-relaxed text-sm mt-2"><span className="text-rose-400 font-medium">Lưu ý:</span> {getCoreMeaning(report.lifePath).negative}</p>
                   </div>
-                  <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30 hover:border-galaxy-secondary transition-all">
-                    <div className="text-4xl font-black text-white mb-2">{results.attitude}</div>
-                    <div className="text-sm font-bold text-galaxy-light mb-1 uppercase">Số Thái Độ</div>
-                    <div className="text-gray-400 italic text-sm">{results.attitudeMeaning.title}</div>
+                  
+                  {/* Thái độ & Ngày sinh */}
+                  <div className="space-y-6">
+                    <div className="bg-galaxy-darkest p-5 rounded-2xl border border-galaxy-primary/30 flex items-center justify-between">
+                      <div>
+                        <div className="text-sm font-bold text-galaxy-light uppercase">Số Thái Độ</div>
+                        <div className="text-xs text-gray-400">Cách phản ứng</div>
+                      </div>
+                      <div className="text-3xl font-black text-white">{report.attitude}</div>
+                    </div>
+                    <div className="bg-galaxy-darkest p-5 rounded-2xl border border-galaxy-primary/30 flex items-center justify-between">
+                      <div>
+                        <div className="text-sm font-bold text-galaxy-light uppercase">Số Ngày Sinh</div>
+                        <div className="text-xs text-gray-400">Năng lực bẩm sinh</div>
+                      </div>
+                      <div className="text-3xl font-black text-white">{report.birthDay}</div>
+                    </div>
                   </div>
                 </div>
+
                 <div className="p-6 bg-galaxy-darkest/50 rounded-2xl border border-galaxy-primary/10">
-                  <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-galaxy-light"></span> 
-                    Ý nghĩa Đường đời số {results.lifePath}:
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed text-justify">
-                    {results.lifePathMeaning.description}. Cụ thể ở năng lượng tích cực, bạn là người {results.lifePathMeaning.positive.toLowerCase()}. Tuy nhiên bạn cần cẩn trọng vượt qua các bài học về sự {results.lifePathMeaning.negative.toLowerCase()}.
-                  </p>
+                  <h3 className="text-sm font-bold text-galaxy-light uppercase mb-2">Thái độ đối với thế giới:</h3>
+                  <p className="text-gray-300 text-sm leading-relaxed">{MEANINGS.ATTITUDE[report.attitude]}</p>
                 </div>
               </div>
             )}
 
-            {/* Tab: Tính Cách */}
-            {activeTab === 'personality' && (
-              <div className="space-y-6 animate-fade-in-up">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30 hover:border-galaxy-secondary transition-all">
-                    <div className="text-4xl font-black text-white mb-2">{results.soulUrge}</div>
-                    <div className="text-sm font-bold text-galaxy-light mb-1 uppercase">Số Linh Hồn (Khao Khát Nội Tâm)</div>
-                    <div className="text-gray-400 italic text-sm">{results.soulUrgeMeaning.title}</div>
-                  </div>
-                  <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30 hover:border-galaxy-secondary transition-all">
-                    <div className="text-4xl font-black text-white mb-2">{results.personality}</div>
-                    <div className="text-sm font-bold text-galaxy-light mb-1 uppercase">Số Nhân Cách (Cách Bạn Thể Hiện)</div>
-                    <div className="text-gray-400 italic text-sm">{results.personalityMeaning.title}</div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="p-6 bg-galaxy-darkest/50 rounded-2xl border-l-4 border-emerald-500">
-                    <div className="text-sm font-bold text-emerald-400 mb-2 uppercase">Điểm mạnh tự nhiên:</div>
-                    <p className="text-gray-300 text-sm">{results.soulUrgeMeaning.positive}</p>
-                  </div>
-                  <div className="p-6 bg-galaxy-darkest/50 rounded-2xl border-l-4 border-rose-500">
-                    <div className="text-sm font-bold text-rose-400 mb-2 uppercase">Góc khuất cần cải thiện:</div>
-                    <p className="text-gray-300 text-sm">{results.soulUrgeMeaning.negative}</p>
+            {/* TAB 2: LINH HỒN (Gated) */}
+            {activeTab === 'soul' && (
+              <div className="relative space-y-6 animate-fade-in-up">
+                {!isAuth && <BlurOverlay />}
+                <div className={!isAuth ? 'blur-[4px] select-none opacity-50' : ''}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
+                      <div className="text-sm font-bold text-galaxy-light uppercase mb-1">Số Linh Hồn (Khát Vọng)</div>
+                      <div className="text-4xl font-black text-white mb-4">{report.soulUrge}</div>
+                      <p className="text-gray-300 text-sm">{getCoreMeaning(report.soulUrge).positive}</p>
+                    </div>
+                    <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
+                      <div className="text-sm font-bold text-galaxy-light uppercase mb-1">Số Nhân Cách (Vỏ Bọc)</div>
+                      <div className="text-4xl font-black text-white mb-4">{report.personality}</div>
+                      <p className="text-gray-300 text-sm">{getCoreMeaning(report.personality).positive}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Tab: Sứ Mệnh */}
+            {/* TAB 3: SỨ MỆNH & TRƯỞNG THÀNH (Gated) */}
             {activeTab === 'destiny' && (
-              <div className="space-y-6 animate-fade-in-up">
-                <div className="bg-galaxy-darkest p-8 rounded-2xl border border-galaxy-primary/50 text-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-galaxy-light/10 blur-2xl"></div>
-                  <div className="relative z-10">
-                    <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-galaxy-secondary mb-4 drop-shadow-lg">
-                      {results.destiny}
+              <div className="relative space-y-6 animate-fade-in-up">
+                {!isAuth && <BlurOverlay />}
+                <div className={!isAuth ? 'blur-[4px] select-none opacity-50' : ''}>
+                  <div className="bg-galaxy-darkest p-8 rounded-2xl border border-galaxy-primary/30 text-center relative overflow-hidden mb-6">
+                    <div className="absolute inset-0 bg-galaxy-light/5 blur-3xl"></div>
+                    <div className="relative z-10">
+                      <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-galaxy-secondary mb-2">{report.destiny}</div>
+                      <div className="text-lg font-bold text-galaxy-light uppercase tracking-widest mb-1">Đại Số Sứ Mệnh</div>
+                      <div className="text-gray-300 italic text-sm">{getCoreMeaning(report.destiny).title}</div>
                     </div>
-                    <div className="text-lg font-bold text-galaxy-light mb-2 uppercase tracking-widest">Đại Số Sứ Mệnh</div>
-                    <div className="text-gray-300 italic">{results.destinyMeaning.title}</div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="p-6 bg-galaxy-darkest/50 rounded-2xl border-l-4 border-galaxy-light">
+                      <h3 className="font-bold text-white mb-2">Lời Khuyên Sứ Mệnh</h3>
+                      <p className="text-sm text-gray-300">{getCoreMeaning(report.destiny).advice}</p>
+                    </div>
+                    <div className="p-6 bg-galaxy-darkest/50 rounded-2xl border border-galaxy-primary/10 flex items-center justify-between">
+                      <div>
+                        <h3 className="font-bold text-white mb-1">Bài Học Trưởng Thành</h3>
+                        <p className="text-xs text-gray-400">Đạt độ chín sau 35 tuổi</p>
+                      </div>
+                      <div className="text-4xl font-black text-galaxy-secondary">{report.maturity}</div>
+                    </div>
                   </div>
                 </div>
-                
-                <div className="p-6 bg-galaxy-darkest/50 rounded-2xl border border-galaxy-primary/10">
-                  <h3 className="text-lg font-bold text-white mb-3">Sứ mạng trọng đại:</h3>
-                  <p className="text-gray-300 leading-relaxed text-justify mb-6">
-                    {results.destinyMeaning.description}. Vũ trụ đưa bạn đến thế giới này để học hỏi và lan tỏa năng lượng đặc biệt của mình.
-                  </p>
-                  <div className="flex flex-wrap gap-4">
-                    <div className="bg-galaxy-primary/20 border border-galaxy-primary/50 px-4 py-2 rounded-lg text-sm text-gray-200">
-                      Màu sắc thu hút: <strong className="text-white ml-1">{getLuckyColor(results.destiny)}</strong>
+              </div>
+            )}
+
+            {/* TAB 4: BIỂU ĐỒ & SỐ THIẾU (Gated) */}
+            {activeTab === 'charts' && (
+              <div className="relative space-y-6 animate-fade-in-up">
+                {!isAuth && <BlurOverlay />}
+                <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${!isAuth ? 'blur-[4px] select-none opacity-50' : ''}`}>
+                  <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
+                    <h3 className="font-bold text-galaxy-light uppercase mb-4">Biểu Đồ Ngày Sinh</h3>
+                    <div className="grid grid-cols-3 gap-2 w-48 mx-auto mb-6">
+                      {[1,2,3,4,5,6,7,8,9].map(num => (
+                        <div key={num} className={`aspect-square flex items-center justify-center text-xl font-bold rounded-lg ${report.birthChart[num] > 0 ? 'bg-galaxy-primary text-white shadow-lg shadow-galaxy-primary/40' : 'bg-white/5 text-white/20'}`}>
+                          {report.birthChart[num] > 0 ? num.toString().repeat(report.birthChart[num]) : ''}
+                        </div>
+                      ))}
                     </div>
-                    <div className="bg-galaxy-secondary/20 border border-galaxy-secondary/50 px-4 py-2 rounded-lg text-sm text-gray-200">
-                      Thời điểm bùng nổ: <strong className="text-white ml-1">{getLuckyDay(results.destiny)}</strong>
+                    <p className="text-xs text-center text-gray-400">Bản đồ sức mạnh bẩm sinh của bạn.</p>
+                  </div>
+
+                  <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
+                    <h3 className="font-bold text-galaxy-light uppercase mb-4">Phân Tích Bổ Sung</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <span className="text-sm text-gray-400 block mb-1">Đam mê tiềm ẩn:</span>
+                        <div className="flex flex-wrap gap-2">
+                          {report.hiddenPassion.length > 0 ? report.hiddenPassion.map(p => (
+                            <span key={p} className="px-3 py-1 bg-galaxy-secondary/20 text-galaxy-light rounded-md text-sm font-bold">Số {p}</span>
+                          )) : <span className="text-sm text-gray-500">Năng lượng đồng đều</span>}
+                        </div>
+                      </div>
+                      <div className="pt-4 border-t border-white/10">
+                        <span className="text-sm text-gray-400 block mb-2">Bài Học Nghiệp Quả (Số Thiếu):</span>
+                        {report.missingNumbers.length > 0 ? (
+                           <div className="space-y-3 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+                             {report.missingNumbers.map(m => (
+                               <div key={m} className="bg-white/5 p-3 rounded-lg">
+                                 <strong className="text-rose-400 text-sm">Số {m}: </strong>
+                                 <span className="text-xs text-gray-300">{MEANINGS.MISSING_NUMBERS[m]}</span>
+                               </div>
+                             ))}
+                           </div>
+                        ) : <span className="text-sm text-emerald-400">Khá hiếm hoi, tên của bạn không bị khuyết số nào!</span>}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 5: CHU KỲ (Gated) */}
+            {activeTab === 'cycles' && (
+              <div className="relative space-y-6 animate-fade-in-up">
+                {!isAuth && <BlurOverlay />}
+                <div className={!isAuth ? 'blur-[4px] select-none opacity-50' : ''}>
+                  <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
+                    <h3 className="font-bold text-galaxy-light uppercase mb-6 text-center">Biểu Đồ 4 Đỉnh Cao Cuộc Đời</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {report.cycles.pinnacles.map((pin, i) => (
+                        <div key={i} className="bg-white/5 border border-white/10 p-5 rounded-xl text-center relative overflow-hidden group hover:border-galaxy-secondary transition-all">
+                          <div className="text-xs text-gray-400 mb-1">Đỉnh cao {i+1}</div>
+                          <div className="text-sm font-medium text-emerald-400 mb-3 block">Tuổi {report.cycles.ages[i]}</div>
+                          <div className="text-5xl font-black text-white mb-4 group-hover:scale-110 transition-transform">{pin}</div>
+                          <p className="text-xs text-gray-300 leading-relaxed line-clamp-4 hover:line-clamp-none transition-all">{MEANINGS.PINNACLES[pin]}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
+                    <h3 className="font-bold text-rose-400 uppercase mb-4">4 Thử Thách Kèm Theo</h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      {report.cycles.challenges.map((chal, i) => (
+                        <div key={i} className="bg-rose-500/10 border border-rose-500/20 p-4 rounded-xl text-center">
+                          <div className="text-xs text-rose-300 mb-2">Thử thách {i+1}</div>
+                          <div className="text-3xl font-black text-rose-500 mb-2">{chal}</div>
+                          <p className="text-[11px] text-gray-400 leading-tight">{MEANINGS.CHALLENGES[chal]}</p>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -230,11 +301,8 @@ const Numerology = () => {
             )}
 
             <div className="pt-8 flex justify-center">
-              <button
-                onClick={() => setResults(null)}
-                className="px-8 py-3 bg-transparent border border-gray-600 hover:border-galaxy-light text-gray-400 hover:text-white rounded-xl transition-all font-medium"
-              >
-                ⟲ Khảo sát thông tin khác
+              <button onClick={() => { setReport(null); setActiveTab('overview'); }} className="px-8 py-3 bg-transparent border border-gray-600 hover:border-galaxy-light text-gray-400 hover:text-white rounded-xl transition-all font-medium">
+                ⟲ Phân tích thông tin khác
               </button>
             </div>
           </div>
