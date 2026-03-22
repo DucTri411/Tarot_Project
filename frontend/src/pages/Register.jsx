@@ -45,7 +45,7 @@ const Register = () => {
         <div className="absolute -top-20 -left-20 w-40 h-40 bg-galaxy-secondary/30 rounded-full blur-[60px] pointer-events-none"></div>
 
         <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#E9D5FF] to-galaxy-light">
-          Đăng Ký Tài Khoản
+          Đăng ký tài khoản
         </h2>
 
         {error && (
@@ -102,7 +102,7 @@ const Register = () => {
             disabled={loading || success}
             className="w-full py-3 mt-2 bg-gradient-to-r from-[#855AB4] to-[#68388D] hover:scale-[1.02] text-white font-semibold rounded-lg shadow-lg shadow-galaxy-primary/20 transition-transform duration-300 disabled:opacity-50 disabled:hover:scale-100"
           >
-            {loading ? 'Đang tạo...' : 'Lập Lá Số Ngay'}
+            {loading ? 'Đang tạo...' : 'Lập lá số ngay'}
           </button>
         </form>
 

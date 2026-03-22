@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Numerology from './pages/Numerology';
+import Tarot from './pages/Tarot';
+import Booking from './pages/Booking';
 
 function App() {
   return (
@@ -14,7 +16,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/numerology" element={<Numerology />} />
-          <Route path="/tarot" element={<div>Trang Tarot đang xây dựng...</div>} />
+          <Route path="/tarot" element={<Tarot />} />
+          <Route path="/booking" element={<Booking />} />
         </Route>
       </Routes>
     </Router>

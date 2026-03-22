@@ -7,16 +7,16 @@ const BlurOverlay = () => (
   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 bg-galaxy-darkest/60 backdrop-blur-[2px] rounded-2xl border border-galaxy-primary/30">
     <div className="bg-galaxy-dark/90 p-6 rounded-xl border border-galaxy-secondary shadow-2xl shadow-galaxy-primary/20 text-center max-w-sm">
       <div className="text-4xl mb-3">🔒</div>
-      <h3 className="text-xl font-bold text-galaxy-light mb-2">Nội Dung Độc Quyền</h3>
+      <h3 className="text-xl font-bold text-galaxy-light mb-2">Nội dung độc quyền</h3>
       <p className="text-gray-300 text-sm mb-6 leading-relaxed">
         Phần giải mã chi tiết và các biểu đồ chuyên sâu chỉ dành cho thành viên của AstroBunny. Đăng nhập ngay hoàn toàn miễn phí!
       </p>
       <div className="flex gap-3 justify-center">
         <Link to="/login" className="px-5 py-2.5 bg-galaxy-primary hover:bg-galaxy-secondary text-white font-medium rounded-lg transition-all shadow-lg shadow-galaxy-primary/30">
-          Đăng Nhập
+          Đăng nhập
         </Link>
         <Link to="/register" className="px-5 py-2.5 bg-transparent border border-galaxy-light text-galaxy-light hover:bg-white/5 font-medium rounded-lg transition-all">
-          Đăng Ký
+          Đăng ký
         </Link>
       </div>
     </div>
@@ -68,7 +68,7 @@ const Numerology = () => {
         
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text mb-4">
-            Báo Cáo Thần Số Học Toàn Diện
+            Báo cáo thần số học toàn diện
           </h1>
           <p className="text-gray-400 max-w-2xl mx-auto">
             Khám phá 10+ chỉ số chuyên sâu, biểu đồ ngày sinh và chu kỳ vận mệnh của bạn theo trường phái Pythagoras nguyên thủy.
@@ -83,15 +83,15 @@ const Numerology = () => {
               </div>
             )}
             <div>
-              <label className="block text-gray-400 text-sm font-medium mb-2">Họ và Tên Khai Sinh <span className="text-galaxy-light">*</span></label>
+              <label className="block text-gray-400 text-sm font-medium mb-2">Họ và tên khai sinh <span className="text-galaxy-light">*</span></label>
               <input type="text" required value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="VD: NGUYEN VAN A" className="w-full px-4 py-3 bg-galaxy-darkest border border-galaxy-primary/50 text-white rounded-xl focus:border-galaxy-light focus:ring-1 focus:ring-galaxy-light uppercase transition-all" />
             </div>
             <div>
-              <label className="block text-gray-400 text-sm font-medium mb-2">Ngày Tháng Năm Sinh <span className="text-galaxy-light">*</span></label>
+              <label className="block text-gray-400 text-sm font-medium mb-2">Ngày tháng năm sinh <span className="text-galaxy-light">*</span></label>
               <input type="date" required value={birthDate} onChange={(e) => setBirthDate(e.target.value)} className="w-full px-4 py-3 bg-galaxy-darkest border border-galaxy-primary/50 text-white rounded-xl focus:border-galaxy-light focus:ring-1 focus:ring-galaxy-light transition-all" style={{ colorScheme: 'dark' }} />
             </div>
             <button type="submit" className="w-full py-4 mt-4 bg-gradient-to-r from-galaxy-primary to-galaxy-secondary hover:scale-[1.02] text-white font-bold text-lg rounded-xl shadow-lg transition-all">
-              Giải Mã Vận Mệnh ✨
+              Giải mã vận mệnh ✨
             </button>
           </form>
         ) : (
@@ -132,7 +132,7 @@ const Numerology = () => {
                   <div className="md:col-span-2 bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
                     <div className="flex justify-between items-start mb-4">
                       <div>
-                        <div className="text-sm font-bold text-galaxy-light uppercase">Số Chủ Đạo (Đường Đời)</div>
+                        <div className="text-sm font-bold text-galaxy-light uppercase">Số chủ đạo (đường đời)</div>
                         <div className="text-gray-400 italic text-sm">{getCoreMeaning(report.lifePath).title}</div>
                       </div>
                       <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-galaxy-secondary">{report.lifePath}</div>
@@ -145,14 +145,14 @@ const Numerology = () => {
                   <div className="space-y-6">
                     <div className="bg-galaxy-darkest p-5 rounded-2xl border border-galaxy-primary/30 flex items-center justify-between">
                       <div>
-                        <div className="text-sm font-bold text-galaxy-light uppercase">Số Thái Độ</div>
+                        <div className="text-sm font-bold text-galaxy-light uppercase">Số thái độ</div>
                         <div className="text-xs text-gray-400">Cách phản ứng</div>
                       </div>
                       <div className="text-3xl font-black text-white">{report.attitude}</div>
                     </div>
                     <div className="bg-galaxy-darkest p-5 rounded-2xl border border-galaxy-primary/30 flex items-center justify-between">
                       <div>
-                        <div className="text-sm font-bold text-galaxy-light uppercase">Số Ngày Sinh</div>
+                        <div className="text-sm font-bold text-galaxy-light uppercase">Số ngày sinh</div>
                         <div className="text-xs text-gray-400">Năng lực bẩm sinh</div>
                       </div>
                       <div className="text-3xl font-black text-white">{report.birthDay}</div>
@@ -174,12 +174,12 @@ const Numerology = () => {
                 <div className={!isAuth ? 'blur-[4px] select-none opacity-50' : ''}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
-                      <div className="text-sm font-bold text-galaxy-light uppercase mb-1">Số Linh Hồn (Khát Vọng)</div>
+                      <div className="text-sm font-bold text-galaxy-light uppercase mb-1">Số linh hồn (khát vọng)</div>
                       <div className="text-4xl font-black text-white mb-4">{report.soulUrge}</div>
                       <p className="text-gray-300 text-sm">{getCoreMeaning(report.soulUrge).positive}</p>
                     </div>
                     <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
-                      <div className="text-sm font-bold text-galaxy-light uppercase mb-1">Số Nhân Cách (Vỏ Bọc)</div>
+                      <div className="text-sm font-bold text-galaxy-light uppercase mb-1">Số nhân cách (vỏ bọc)</div>
                       <div className="text-4xl font-black text-white mb-4">{report.personality}</div>
                       <p className="text-gray-300 text-sm">{getCoreMeaning(report.personality).positive}</p>
                     </div>
@@ -197,18 +197,18 @@ const Numerology = () => {
                     <div className="absolute inset-0 bg-galaxy-light/5 blur-3xl"></div>
                     <div className="relative z-10">
                       <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-galaxy-secondary mb-2">{report.destiny}</div>
-                      <div className="text-lg font-bold text-galaxy-light uppercase tracking-widest mb-1">Đại Số Sứ Mệnh</div>
+                      <div className="text-lg font-bold text-galaxy-light uppercase tracking-widest mb-1">Đại số sứ mệnh</div>
                       <div className="text-gray-300 italic text-sm">{getCoreMeaning(report.destiny).title}</div>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="p-6 bg-galaxy-darkest/50 rounded-2xl border-l-4 border-galaxy-light">
-                      <h3 className="font-bold text-white mb-2">Lời Khuyên Sứ Mệnh</h3>
+                      <h3 className="font-bold text-white mb-2">Lời khuyên sứ mệnh</h3>
                       <p className="text-sm text-gray-300">{getCoreMeaning(report.destiny).advice}</p>
                     </div>
                     <div className="p-6 bg-galaxy-darkest/50 rounded-2xl border border-galaxy-primary/10 flex items-center justify-between">
                       <div>
-                        <h3 className="font-bold text-white mb-1">Bài Học Trưởng Thành</h3>
+                        <h3 className="font-bold text-white mb-1">Bài học trưởng thành</h3>
                         <p className="text-xs text-gray-400">Đạt độ chín sau 35 tuổi</p>
                       </div>
                       <div className="text-4xl font-black text-galaxy-secondary">{report.maturity}</div>
@@ -224,7 +224,7 @@ const Numerology = () => {
                 {!isAuth && <BlurOverlay />}
                 <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${!isAuth ? 'blur-[4px] select-none opacity-50' : ''}`}>
                   <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
-                    <h3 className="font-bold text-galaxy-light uppercase mb-4">Biểu Đồ Ngày Sinh</h3>
+                    <h3 className="font-bold text-galaxy-light uppercase mb-4">Biểu đồ ngày sinh</h3>
                     <div className="grid grid-cols-3 gap-2 w-48 mx-auto mb-6">
                       {[1,2,3,4,5,6,7,8,9].map(num => (
                         <div key={num} className={`aspect-square flex items-center justify-center text-xl font-bold rounded-lg ${report.birthChart[num] > 0 ? 'bg-galaxy-primary text-white shadow-lg shadow-galaxy-primary/40' : 'bg-white/5 text-white/20'}`}>
@@ -236,7 +236,7 @@ const Numerology = () => {
                   </div>
 
                   <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
-                    <h3 className="font-bold text-galaxy-light uppercase mb-4">Phân Tích Bổ Sung</h3>
+                    <h3 className="font-bold text-galaxy-light uppercase mb-4">Phân tích bổ sung</h3>
                     <div className="space-y-4">
                       <div>
                         <span className="text-sm text-gray-400 block mb-1">Đam mê tiềm ẩn:</span>
@@ -247,7 +247,7 @@ const Numerology = () => {
                         </div>
                       </div>
                       <div className="pt-4 border-t border-white/10">
-                        <span className="text-sm text-gray-400 block mb-2">Bài Học Nghiệp Quả (Số Thiếu):</span>
+                        <span className="text-sm text-gray-400 block mb-2">Bài học nghiệp quả (số thiếu):</span>
                         {report.missingNumbers.length > 0 ? (
                            <div className="space-y-3 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
                              {report.missingNumbers.map(m => (
@@ -271,7 +271,7 @@ const Numerology = () => {
                 {!isAuth && <BlurOverlay />}
                 <div className={!isAuth ? 'blur-[4px] select-none opacity-50' : ''}>
                   <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
-                    <h3 className="font-bold text-galaxy-light uppercase mb-6 text-center">Biểu Đồ 4 Đỉnh Cao Cuộc Đời</h3>
+                    <h3 className="font-bold text-galaxy-light uppercase mb-6 text-center">Biểu đồ 4 đỉnh cao cuộc đời</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                       {report.cycles.pinnacles.map((pin, i) => (
                         <div key={i} className="bg-white/5 border border-white/10 p-5 rounded-xl text-center relative overflow-hidden group hover:border-galaxy-secondary transition-all">
@@ -285,7 +285,7 @@ const Numerology = () => {
                   </div>
 
                   <div className="bg-galaxy-darkest p-6 rounded-2xl border border-galaxy-primary/30">
-                    <h3 className="font-bold text-rose-400 uppercase mb-4">4 Thử Thách Kèm Theo</h3>
+                    <h3 className="font-bold text-rose-400 uppercase mb-4">4 thử thách kèm theo</h3>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                       {report.cycles.challenges.map((chal, i) => (
                         <div key={i} className="bg-rose-500/10 border border-rose-500/20 p-4 rounded-xl text-center">

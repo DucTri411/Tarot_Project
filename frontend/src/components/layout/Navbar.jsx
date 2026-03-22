@@ -1,13 +1,43 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+
+  // Hàm kiểm tra token hết hạn
+  const isTokenExpired = (t) => {
+    if (!t) return true;
+    try {
+      const payload = JSON.parse(atob(t.split('.')[1]));
+      return payload.exp * 1000 < Date.now();
+    } catch {
+      return true;
+    }
+  };
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    const storedUser = JSON.parse(localStorage.getItem('user') || 'null');
+
+    if (storedToken && !isTokenExpired(storedToken) && storedUser) {
+      setToken(storedToken);
+      setUser(storedUser);
+    } else {
+      // Token hết hạn hoặc không hợp lệ → xóa và đăng xuất
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setToken(null);
+      setUser(null);
+    }
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    setToken(null);
+    setUser(null);
     navigate('/login');
   };
 
@@ -19,10 +49,13 @@ const Navbar = () => {
 
       <div className="flex items-center gap-6">
         <Link to="/numerology" className="text-gray-300 hover:text-galaxy-light transition duration-300">
-          Thần Số Học
+          Thần số học
         </Link>
         <Link to="/tarot" className="text-gray-300 hover:text-galaxy-light transition duration-300">
           Tarot
+        </Link>
+        <Link to="/booking" className="text-gray-300 hover:text-galaxy-light transition duration-300">
+          Đặt lịch
         </Link>
 
         {token && user ? (
