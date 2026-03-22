@@ -42,7 +42,7 @@ const Login = () => {
         <div className="absolute -top-20 -right-20 w-40 h-40 bg-galaxy-primary/40 rounded-full blur-[50px] pointer-events-none"></div>
 
         <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-galaxy-light to-white">
-          Đăng Nhập
+          Đăng nhập
         </h2>
 
         {error && (

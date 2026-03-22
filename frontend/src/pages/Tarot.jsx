@@ -10,13 +10,13 @@ const BlurOverlay = () => (
   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 bg-galaxy-darkest/60 backdrop-blur-[2px] rounded-2xl border border-galaxy-primary/30">
     <div className="bg-galaxy-dark/90 p-6 rounded-xl border border-galaxy-secondary shadow-2xl shadow-galaxy-primary/20 text-center max-w-sm">
       <div className="text-4xl mb-3">🔒</div>
-      <h3 className="text-xl font-bold text-galaxy-light mb-2">Mở Khóa Lời Giải Bài Tarot</h3>
+      <h3 className="text-xl font-bold text-galaxy-light mb-2">Mở khóa lời giải bài Tarot</h3>
       <p className="text-gray-300 text-sm mb-6 leading-relaxed">
         Đăng nhập miễn phí để xem lời giải chi tiết của từng lá bài và tổng hợp bói toán liên kết 3 lá.
       </p>
       <div className="flex gap-3 justify-center">
-        <Link to="/login" className="px-5 py-2.5 bg-galaxy-primary hover:bg-galaxy-secondary text-white font-medium rounded-lg transition-all shadow-lg shadow-galaxy-primary/30">Đăng Nhập</Link>
-        <Link to="/register" className="px-5 py-2.5 bg-transparent border border-galaxy-light text-galaxy-light hover:bg-white/5 font-medium rounded-lg transition-all">Đăng Ký</Link>
+        <Link to="/login" className="px-5 py-2.5 bg-galaxy-primary hover:bg-galaxy-secondary text-white font-medium rounded-lg transition-all shadow-lg shadow-galaxy-primary/30">Đăng nhập</Link>
+        <Link to="/register" className="px-5 py-2.5 bg-transparent border border-galaxy-light text-galaxy-light hover:bg-white/5 font-medium rounded-lg transition-all">Đăng ký</Link>
       </div>
     </div>
   </div>
@@ -183,7 +183,7 @@ const Tarot = () => {
         <div className="w-full max-w-3xl text-center">
           <div className="text-7xl mb-6 animate-pulse">🔮</div>
           <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text mb-6">
-            Trải Bài Tarot
+            Trải bài Tarot
           </h1>
           <p className="text-gray-400 text-lg mb-4 max-w-xl mx-auto leading-relaxed">
             Bộ bài Tarot 78 lá mang đến những thông điệp sâu sắc về hành trình cuộc đời bạn.
@@ -214,7 +214,7 @@ const Tarot = () => {
             onClick={handleStartReading}
             className="px-10 py-4 bg-gradient-to-r from-galaxy-primary to-galaxy-secondary hover:scale-[1.03] text-white font-bold text-lg rounded-xl shadow-lg shadow-galaxy-primary/30 transition-all"
           >
-            Bắt Đầu Trải Bài ✨
+            Bắt đầu trải bài ✨
           </button>
         </div>
       </div>
@@ -260,7 +260,7 @@ const Tarot = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-10">
           <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text">
-            Trải Bài Của Bạn
+            Trải bài của bạn
           </h1>
           <button onClick={handleReset} className="px-4 py-2 text-sm text-gray-400 hover:text-galaxy-light border border-gray-700 hover:border-galaxy-light rounded-lg transition-all">
             ⟲ Trải lại
@@ -291,20 +291,20 @@ const Tarot = () => {
             {!isAuth && <BlurOverlay />}
             <div className={`bg-galaxy-darkest p-8 rounded-2xl border border-galaxy-primary/30 space-y-6 ${!isAuth ? 'blur-[4px] select-none opacity-50' : ''}`}>
               <h2 className="text-xl font-bold text-galaxy-light text-center uppercase tracking-wider">
-                ✦ Tổng Hợp Lời Giải ✦
+                ✦ Tổng hợp lời giải ✦
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white/5 p-5 rounded-xl">
-                  <h3 className="text-base font-bold text-white mb-2">⚡ Năng Lượng Chủ Đạo</h3>
+                  <h3 className="text-base font-bold text-white mb-2">⚡ Năng lượng chủ đạo</h3>
                   <p className="text-sm text-gray-300 leading-relaxed">{synthesis.energy}</p>
                 </div>
                 <div className="bg-white/5 p-5 rounded-xl">
-                  <h3 className="text-base font-bold text-white mb-2">🌊 Tâm Trạng Tổng Thể</h3>
+                  <h3 className="text-base font-bold text-white mb-2">🌊 Tâm trạng tổng thể</h3>
                   <p className="text-sm text-gray-300 leading-relaxed">{synthesis.mood}</p>
                 </div>
               </div>
               <div className="bg-galaxy-primary/10 border-l-4 border-galaxy-light p-6 rounded-r-xl">
-                <h3 className="text-base font-bold text-galaxy-light mb-2">💫 Lời Khuyên</h3>
+                <h3 className="text-base font-bold text-galaxy-light mb-2">💫 Lời khuyên</h3>
                 <p className="text-sm text-gray-300 leading-relaxed">{synthesis.advice}</p>
               </div>
             </div>

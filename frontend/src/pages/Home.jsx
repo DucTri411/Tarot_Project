@@ -4,13 +4,13 @@ const Home = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-140px)] px-4">
       {/* Hero Section */}
-      <div className="max-w-4xl w-full text-center mb-16 relative">
+      <div className="max-w-4xl w-full text-center mt-12 md:mt-24 mb-16 relative">
         {/* Glow effect */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-galaxy-primary/30 rounded-full blur-[100px] -z-10"></div>
         
-        <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight bg-gradient-to-br from-white via-[#E9D5FF] to-galaxy-secondary text-transparent bg-clip-text">
-          Khám Phá Bản Thân Qua<br/>
-          <span className="text-galaxy-light">Những Con Số & Lá Bài</span>
+        <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight bg-gradient-to-br from-white via-[#E9D5FF] to-galaxy-secondary text-transparent bg-clip-text flex flex-col gap-2">
+          <span>Khám phá bản thân qua</span>
+          <span className="text-galaxy-light">những con số & lá bài</span>
         </h1>
         
         <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -35,7 +35,7 @@ const Home = () => {
           </div>
 
           <div className="w-full md:w-1/2 flex flex-col items-start order-2 md:order-2 z-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-galaxy-light to-white">Thần Số Học</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-galaxy-light to-white">Thần số học</h2>
             <p className="text-lg text-gray-300 leading-relaxed mb-10 w-full max-w-xl">
               Dựa trên ngày tháng năm sinh và họ tên của bạn, hệ thống AstroBunny sẽ tính toán sâu sắc qua các phương trình Pythagoras cổ đại để tìm ra Số Chủ Đạo, Số Sứ Mệnh, và Số Linh Hồn giúp bạn nắm bắt thời vận.
             </p>

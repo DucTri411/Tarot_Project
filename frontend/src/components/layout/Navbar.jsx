@@ -49,10 +49,13 @@ const Navbar = () => {
 
       <div className="flex items-center gap-6">
         <Link to="/numerology" className="text-gray-300 hover:text-galaxy-light transition duration-300">
-          Thần Số Học
+          Thần số học
         </Link>
         <Link to="/tarot" className="text-gray-300 hover:text-galaxy-light transition duration-300">
           Tarot
+        </Link>
+        <Link to="/booking" className="text-gray-300 hover:text-galaxy-light transition duration-300">
+          Đặt lịch
         </Link>
 
         {token && user ? (
