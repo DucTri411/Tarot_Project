@@ -64,7 +64,7 @@
 - [ ] Forgot password flow
 - [ ] Reset password flow
 - [ ] Protect private routes
-- [ ] Protect admin routes
+- [x] Protect admin routes
 - [ ] Store auth state
 - [ ] Handle session expiration
 
@@ -102,8 +102,8 @@
 
 ## 9. Back Office / Admin Panel
 - [ ] Create admin login
-- [ ] Create admin dashboard
-- [ ] View user list
+- [x] Create admin dashboard
+- [x] View user list
 - [ ] View lead list
 - [ ] View calculation history
 - [ ] View report history
@@ -113,7 +113,7 @@
 - [ ] Manage system settings
 - [ ] Manage email templates
 - [ ] Manage campaign tags
-- [ ] Export data to CSV
+- [x] Export data to CSV
 - [ ] Filter and search records
 
 ## 10. Database Design
