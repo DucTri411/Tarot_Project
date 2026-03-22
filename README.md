@@ -1,21 +1,21 @@
-# Dự án AstroBunny (Thần Số Học & Tarot)
+# Dự án AstroBunny (Thần số học & Tarot)
 
-Dự án Web hỗ trợ tra cứu Thần Số Học và bốc bài Tarot hiển thị kết quả, được xây dựng với **React (Vite) + TailwindCSS v4** cho Frontend và **Node.js (Express)** cho Backend.
+Dự án Web hỗ trợ tra cứu thần số học và bốc bài Tarot hiển thị kết quả, được xây dựng với **React (Vite) + TailwindCSS v4** cho Frontend và **Node.js (Express)** cho Backend.
 
-## Yêu cầu Hệ thống (Prerequisites)
+## Yêu cầu hệ thống (Prerequisites)
 1. **Node.js**: Phiên bản 18.x trở lên.
 2. **Docker**: Dùng để chạy máy chủ MySQL nội bộ cực kỳ ổn định.
 
-## Cài đặt và Chạy dự án
+## Cài đặt và chạy dự án
 
-### Bước 1: Khởi động Cơ sở dữ liệu (MySQL bằng Docker)
+### Bước 1: Khởi động cơ sở dữ liệu (MySQL bằng Docker)
 - Mở CMD ở **thư mục gốc của dự án** (nơi có file `docker-compose.yml`).
 - Chạy lệnh sau để khởi động Database ngầm:
   ```cmd
   docker-compose up -d
   ```
 
-### Bước 2: Cấu hình Môi trường
+### Bước 2: Cấu hình môi trường
 - Vào thư mục `backend`, copy file `.env.example` và đổi tên nó thành `.env`. (Nếu đã có file `.env` chứa `DB_PASSWORD=root` thì bỏ qua).
 
 ### Bước 3: Cài đặt thư viện của toàn bộ dự án
@@ -25,7 +25,7 @@ Dự án Web hỗ trợ tra cứu Thần Số Học và bốc bài Tarot hiển 
   ```
 - *Lệnh này sẽ tự động tải thư viện cho thư mục gốc, thư mục `backend` và thư mục `frontend`.*
 
-### Bước 4: Tạo dữ liệu mẫu Database
+### Bước 4: Tạo dữ liệu mẫu database
 - Tại **thư mục gốc của dự án**, chạy lệnh để tạo các bảng dữ liệu Users:
   ```cmd
   npm run db:setup
