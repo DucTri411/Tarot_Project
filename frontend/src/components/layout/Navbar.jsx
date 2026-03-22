@@ -60,6 +60,11 @@ const Navbar = () => {
 
         {token && user ? (
           <div className="flex items-center gap-4 ml-4 pl-4 border-l border-galaxy-primary/50">
+            {user.role === 'admin' && (
+              <Link to="/admin" className="px-3 py-1.5 text-xs bg-galaxy-secondary hover:bg-galaxy-light text-white font-bold rounded-lg transition-all shadow-md">
+                Admin Panel
+              </Link>
+            )}
             <span className="text-sm font-medium text-galaxy-light">
               Xin chào, <span className="text-white">{user.username}</span>
             </span>
