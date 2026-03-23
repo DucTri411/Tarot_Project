@@ -112,8 +112,8 @@ export const drawThreeCards = () => {
   }));
 };
 
-// Tổng hợp lời khuyên chung dựa trên 3 lá
-export const generateSynthesis = (drawnCards) => {
+// Tổng hợp lời khuyên chung dựa trên 3 lá và chủ đề
+export const generateSynthesis = (drawnCards, topic = 'Tổng quan') => {
   const majorCount = drawnCards.filter(d => d.card.arcana === 'major').length;
   const reversedCount = drawnCards.filter(d => d.reversed).length;
 
@@ -128,9 +128,22 @@ export const generateSynthesis = (drawnCards) => {
   else if (reversedCount === 2) mood = 'Hai lá ngược báo hiệu những thử thách đáng kể cần sự chú ý đặc biệt và nỗ lực vượt qua.';
   else mood = 'Ba lá ngược cho thấy giai đoạn nhiều biến động — nhưng hãy nhớ rằng mỗi thử thách là cơ hội để trưởng thành.';
 
+  let topicAdvice = '';
+  if (topic === 'Tình yêu & Mối quan hệ') {
+     topicAdvice = 'Về mặt tình cảm, hãy chú ý đến sự gắn kết và giao tiếp chân thành. Đừng để cái tôi hoặc sự hiểu lầm làm rạn nứt mối quan hệ. ';
+  } else if (topic === 'Sự nghiệp & Sự nghiệp') {
+     topicAdvice = 'Trong công việc và sự nghiệp, hãy duy trì sự kỷ luật và tập trung. Cơ hội đang tồn tại, nhưng cần sự chuyên cần để khai phá. ';
+  } else if (topic === 'Sự nghiệp & Tài chính' || topic === 'Tài chính') {
+     topicAdvice = 'Về tiền bạc và tài chính, hãy cẩn trọng với các khoản đầu tư và chi tiêu bốc đồng. Duy trì kỷ luật sẽ là chìa khóa dài hạn. ';
+  } else if (topic === 'Sức khỏe & Tinh thần') {
+     topicAdvice = 'Giai đoạn này, thiền tĩnh lặng và tự chăm sóc bản thân là ưu tiên hàng đầu. Hãy lắng nghe cơ thể và buông bỏ căng thẳng. ';
+  } else {
+     topicAdvice = 'Hãy giữ một nhãn quan bao quát để nhìn nhận đầy đủ bức tranh cuộc sống. ';
+  }
+
   return {
     energy,
     mood,
-    advice: 'Hãy suy ngẫm về thông điệp của từng lá bài trong bối cảnh cuộc sống hiện tại. Tarot không quyết định tương lai — mà soi sáng những lựa chọn trước mắt bạn.'
+    advice: `${topicAdvice}Hãy suy ngẫm về thông điệp của từng lá bài và ứng dụng nó theo chủ đề '${topic}'. Tarot không ấn định tương lai — vị quyết định nằm ở chính bạn.`
   };
 };
