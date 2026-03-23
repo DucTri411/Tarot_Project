@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { drawThreeCards, generateSynthesis } from '../utils/tarotData';
 import { getDetailForMajor, SUIT_THEMES } from '../utils/tarotDetails';
+import { TOPIC_DETAILS } from '../utils/tarotTopicDetails';
 
 /* ──────────────────────────────────────────── */
 /*  BlurOverlay: Lớp phủ yêu cầu đăng nhập     */
@@ -25,7 +26,7 @@ const BlurOverlay = () => (
 /* ──────────────────────────────────────────── */
 /*  TarotCardComponent: Lá bài lật được         */
 /* ──────────────────────────────────────────── */
-const TarotCardComponent = ({ drawn, onFlip, isAuth }) => {
+const TarotCardComponent = ({ drawn, onFlip, isAuth, topic }) => {
   const posLabels = { past: 'Quá Khứ', present: 'Hiện Tại', future: 'Tương Lai' };
   const posIcons = { past: '⏳', present: '🔮', future: '✨' };
 
@@ -95,46 +96,91 @@ const TarotCardComponent = ({ drawn, onFlip, isAuth }) => {
       {drawn.flipped && (() => {
         const detail = drawn.card.arcana === 'major' ? getDetailForMajor(drawn.card.id) : null;
         const suitInfo = drawn.card.suit ? SUIT_THEMES[drawn.card.suit] : null;
+
+        const topicMap = {
+          'Tình yêu & Mối quan hệ': 'love',
+          'Sự nghiệp & Tài chính': 'career',
+          'Sức khỏe & Tinh thần': 'health',
+          'Quyết định & Định hướng': 'guidance'
+        };
+        const aspect = topicMap[topic];
+        const specificDetail = aspect && TOPIC_DETAILS && TOPIC_DETAILS[drawn.card.id] ? TOPIC_DETAILS[drawn.card.id][aspect] : null;
+
         return (
-          <div className="relative w-full animate-fade-in-up">
+          <div className="relative w-full animate-fade-in-up mt-2">
             {!isAuth && <BlurOverlay />}
             <div className={`bg-galaxy-darkest p-4 rounded-xl border border-galaxy-primary/20 space-y-3 ${!isAuth ? 'blur-[4px] select-none opacity-50' : ''}`}>
-              {/* Ý nghĩa chính */}
-              <div>
-                <h4 className="text-base font-bold text-galaxy-light mb-2">
-                  {drawn.reversed ? '⟲ Ý nghĩa ngược:' : '☀ Ý nghĩa thuận:'}
-                </h4>
-                <p className="text-sm text-gray-300 leading-relaxed">
-                  {drawn.reversed ? drawn.card.reversedMeaning : drawn.card.uprightMeaning}
-                </p>
-              </div>
-              {/* Suit info cho Minor Arcana */}
-              {suitInfo && (
-                <div className="bg-white/5 p-4 rounded-lg">
-                  <span className="text-xs font-bold text-galaxy-light uppercase">{suitInfo.element} — {suitInfo.theme}</span>
-                  <p className="text-xs text-gray-400 mt-2 leading-relaxed">{suitInfo.description}</p>
-                </div>
-              )}
-              {/* Chi tiết 4 khía cạnh cho Major Arcana */}
-              {detail && (
-                <div className="grid grid-cols-2 gap-3 pt-3 border-t border-white/10">
-                  <div className="bg-rose-500/10 p-3 rounded-lg">
-                    <span className="text-xs font-bold text-rose-300">❤ Tình yêu</span>
-                    <p className="text-xs text-gray-300 mt-1.5 leading-relaxed">{detail.love}</p>
+              
+              {topic === 'Tổng quan' ? (
+                <>
+                  {/* Ý nghĩa chính */}
+                  <div>
+                    <h4 className="text-sm font-bold text-galaxy-light mb-1.5 flex items-center gap-1.5">
+                      {drawn.reversed ? '⟲' : '☀'} Ý nghĩa chung ({drawn.reversed ? 'Ngược' : 'Thuận'}):
+                    </h4>
+                    <p className="text-sm text-gray-300 leading-relaxed">
+                      {drawn.reversed ? drawn.card.reversedMeaning : drawn.card.uprightMeaning}
+                    </p>
                   </div>
-                  <div className="bg-blue-500/10 p-3 rounded-lg">
-                    <span className="text-xs font-bold text-blue-300">💼 Sự nghiệp</span>
-                    <p className="text-xs text-gray-300 mt-1.5 leading-relaxed">{detail.career}</p>
-                  </div>
-                  <div className="bg-emerald-500/10 p-3 rounded-lg">
-                    <span className="text-xs font-bold text-emerald-300">💰 Tài chính</span>
-                    <p className="text-xs text-gray-300 mt-1.5 leading-relaxed">{detail.finance}</p>
-                  </div>
-                  <div className="bg-amber-500/10 p-3 rounded-lg">
-                    <span className="text-xs font-bold text-amber-300">🏥 Sức khỏe</span>
-                    <p className="text-xs text-gray-300 mt-1.5 leading-relaxed">{detail.health}</p>
-                  </div>
-                </div>
+                  
+                  {/* Suit info cho Minor Arcana */}
+                  {suitInfo && (
+                    <div className="bg-white/5 p-3 rounded-lg mt-3">
+                      <span className="text-xs font-bold text-galaxy-light uppercase flex items-center gap-1">
+                        {suitInfo.element} — {suitInfo.theme}
+                      </span>
+                      <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">{suitInfo.description}</p>
+                    </div>
+                  )}
+                  
+                  {/* Chi tiết 4 khía cạnh cho Major Arcana */}
+                  {detail && (
+                    <div className="grid grid-cols-2 gap-3 pt-3 mt-3 border-t border-white/10">
+                      <div className="bg-rose-500/10 p-3 rounded-lg border border-rose-500/20">
+                        <span className="text-[11px] font-bold text-rose-300 uppercase block mb-1">❤ Tình yêu</span>
+                        <p className="text-[11px] text-gray-300 leading-relaxed">{detail.love}</p>
+                      </div>
+                      <div className="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20">
+                        <span className="text-[11px] font-bold text-blue-300 uppercase block mb-1">💼 Sự nghiệp</span>
+                        <p className="text-[11px] text-gray-300 leading-relaxed">{detail.career}</p>
+                      </div>
+                      <div className="bg-emerald-500/10 p-3 rounded-lg border border-emerald-500/20">
+                        <span className="text-[11px] font-bold text-emerald-300 uppercase block mb-1">💰 Tài chính</span>
+                        <p className="text-[11px] text-gray-300 leading-relaxed">{detail.finance}</p>
+                      </div>
+                      <div className="bg-amber-500/10 p-3 rounded-lg border border-amber-500/20">
+                        <span className="text-[11px] font-bold text-amber-300 uppercase block mb-1">🏥 Sức khỏe</span>
+                        <p className="text-[11px] text-gray-300 leading-relaxed">{detail.health}</p>
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  {/* Topic Specific Meaning */}
+                  {specificDetail ? (
+                    <div className="bg-galaxy-primary/10 p-4 rounded-xl border border-galaxy-primary/30">
+                      <h4 className="text-sm font-bold text-galaxy-light mb-2 flex flex-wrap items-center gap-2">
+                        <span>{topic}</span>
+                        <span className="bg-galaxy-primary text-white text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-wider shadow">
+                          {drawn.reversed ? 'Ngược ⟲' : 'Thuận ☀'}
+                        </span>
+                      </h4>
+                      <p className="text-sm text-gray-200 leading-relaxed">
+                        {drawn.reversed ? specificDetail.reversed : specificDetail.upright}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="bg-white/5 p-4 rounded-xl border border-white/10 text-center">
+                      <p className="text-sm text-gray-400 italic mb-2">Nội dung chuyên sâu cho chủ đề này đang được cập nhật...</p>
+                      <hr className="border-white/10 my-3" />
+                      <h4 className="text-xs font-bold text-gray-300 mb-1.5 text-left">Ý nghĩa chung:</h4>
+                      <p className="text-xs text-gray-400 leading-relaxed text-left">
+                        {drawn.reversed ? drawn.card.reversedMeaning : drawn.card.uprightMeaning}
+                      </p>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -301,6 +347,7 @@ const Tarot = () => {
               drawn={drawn}
               onFlip={() => handleFlip(i)}
               isAuth={isAuth}
+              topic={topic}
             />
           ))}
         </div>
