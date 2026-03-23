@@ -1,9 +1,11 @@
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 
 const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -13,13 +15,22 @@ const AdminLayout = () => {
 
   const navItems = [
     { path: '/admin', label: '📊 Dashboard', exact: true },
-    { path: '/admin/users', label: '👥 Quản lý người dùng' }
+    { path: '/admin/users', label: '👥 Quản lý người dùng' },
+    { path: '/admin/feedbacks', label: '💬 Phản hồi từ user' }
   ];
 
   return (
     <div className="flex h-screen bg-galaxy-darkest text-gray-200 overflow-hidden text-sm">
+      {/* Sidebar Overlay (Mobile) */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-20 md:hidden backdrop-blur-sm"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 bg-galaxy-dark border-r border-galaxy-primary/30 flex flex-col z-20 shadow-2xl">
+      <aside className={`fixed md:static inset-y-0 left-0 w-64 bg-galaxy-dark border-r border-galaxy-primary/30 flex flex-col z-30 shadow-2xl transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
         <div className="p-6 border-b border-galaxy-primary/30">
           <Link to="/" className="text-xl font-bold bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text flex flex-col items-center">
             <span>🐰 AstroBunny</span>
@@ -63,8 +74,18 @@ const AdminLayout = () => {
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-full relative overflow-hidden">
         {/* Header */}
-        <header className="h-16 bg-galaxy-dark border-b border-galaxy-primary/30 flex items-center justify-between px-8 z-10 shadow-md">
-          <h2 className="text-lg font-semibold text-white">Quản trị hệ thống</h2>
+        <header className="h-16 bg-galaxy-dark border-b border-galaxy-primary/30 flex items-center justify-between px-4 md:px-8 z-10 shadow-md">
+          <div className="flex items-center gap-3">
+            <button 
+              className="md:hidden text-galaxy-light hover:text-white focus:outline-none p-1 mr-2"
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <h2 className="text-lg font-semibold text-white">Quản trị hệ thống</h2>
+          </div>
           <div className="flex items-center gap-3">
             <span className="w-8 h-8 rounded-full bg-gradient-to-tr from-galaxy-primary to-[#E9D5FF] flex items-center justify-center text-galaxy-darkest font-bold">
               {user.username ? user.username.charAt(0).toUpperCase() : 'A'}

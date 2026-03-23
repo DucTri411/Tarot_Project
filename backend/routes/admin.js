@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
+const feedbackController = require('../controllers/feedbackController');
 const { verifyToken, isAdmin } = require('../middlewares/authMiddleware');
 
 // Tất cả endpoints admin đều yêu cầu Auth & Quyền Admin
@@ -20,5 +21,11 @@ router.delete('/users/:id', adminController.deleteUser);
 
 // PUT /api/admin/users/:id/role
 router.put('/users/:id/role', adminController.updateUserRole);
+
+// GET /api/admin/feedbacks
+router.get('/feedbacks', feedbackController.getFeedbacks);
+
+// DELETE /api/admin/feedbacks/:id
+router.delete('/feedbacks/:id', feedbackController.deleteFeedback);
 
 module.exports = router;

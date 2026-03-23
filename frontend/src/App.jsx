@@ -8,8 +8,10 @@ import Tarot from './pages/Tarot';
 import Booking from './pages/Booking';
 import AdminRoute from './components/routing/AdminRoute';
 import AdminLayout from './components/layout/AdminLayout';
+import AdminFeedbacks from './pages/admin/AdminFeedbacks';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminUsers from './pages/admin/AdminUsers';
+import FeedbackModal from './components/ui/FeedbackModal';
 
 function App() {
   return (
@@ -29,9 +31,11 @@ function App() {
           <Route element={<AdminLayout />}>
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/feedbacks" element={<AdminFeedbacks />} />
           </Route>
         </Route>
       </Routes>
+      <FeedbackModal />
     </Router>
   );
 }

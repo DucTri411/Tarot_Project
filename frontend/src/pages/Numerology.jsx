@@ -109,12 +109,12 @@ const Numerology = () => {
             </div>
 
             {/* View Tabs */}
-            <div className="flex flex-wrap border-b border-border-default/20">
+            <div className="flex overflow-x-auto whitespace-nowrap border-b border-galaxy-primary/30 custom-scrollbar pb-1">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 min-w-[140px] py-3 px-2 text-sm font-bold transition-all relative ${
+                  className={`inline-block px-6 py-3 text-sm font-bold transition-all relative ${
                     activeTab === tab.id ? 'text-galaxy-light' : 'text-gray-500 hover:text-gray-300'
                   }`}
                 >

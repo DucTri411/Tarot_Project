@@ -40,7 +40,7 @@ const TarotCardComponent = ({ drawn, onFlip, isAuth, topic }) => {
       {/* Lá bài */}
       <div
         onClick={() => !drawn.flipped && onFlip()}
-        className={`relative w-44 h-72 rounded-2xl cursor-pointer transition-all duration-700 [transform-style:preserve-3d] ${drawn.flipped ? '[transform:rotateY(180deg)]' : 'hover:scale-105 hover:shadow-2xl hover:shadow-galaxy-primary/40'}`}
+        className={`relative w-40 h-64 md:w-44 md:h-72 rounded-2xl cursor-pointer transition-all duration-700 [transform-style:preserve-3d] ${drawn.flipped ? '[transform:rotateY(180deg)]' : 'hover:scale-105 hover:shadow-2xl hover:shadow-galaxy-primary/40'}`}
       >
         {/* Mặt sau */}
         <div className="absolute inset-0 [backface-visibility:hidden] rounded-2xl overflow-hidden border-2 border-galaxy-primary shadow-xl">
