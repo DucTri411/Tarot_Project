@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 
 const Booking = () => {
   const [formData, setFormData] = useState({
@@ -10,14 +11,24 @@ const Booking = () => {
     notes: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate booking API call
-    setTimeout(() => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      await axios.post(`${apiUrl}/api/booking`, formData);
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 800);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Có lỗi xảy ra khi đặt lịch. Vui lòng thử lại.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -67,6 +78,11 @@ const Booking = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-4 rounded-xl text-center text-sm">
+              {error}
+            </div>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Tên */}
             <div>
@@ -155,9 +171,10 @@ const Booking = () => {
 
           <button 
             type="submit" 
-            className="w-full py-4 mt-2 bg-gradient-to-r from-galaxy-primary to-galaxy-secondary hover:scale-[1.02] text-white font-bold text-lg rounded-xl shadow-lg shadow-galaxy-primary/30 transition-all duration-300"
+            disabled={loading}
+            className="w-full py-4 mt-2 bg-gradient-to-r from-galaxy-primary to-galaxy-secondary hover:scale-[1.02] text-white font-bold text-lg rounded-xl shadow-lg shadow-galaxy-primary/30 transition-all duration-300 disabled:opacity-50"
           >
-            Đăng Ký Đặt Lịch
+            {loading ? 'Đang xử lý...' : 'Đăng Ký Đặt Lịch'}
           </button>
         </form>
       </div>

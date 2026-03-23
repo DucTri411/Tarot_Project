@@ -9,7 +9,7 @@ const GlobalLayout = () => {
         <Outlet />
       </main>
       <footer className="bg-galaxy-dark border-t border-galaxy-primary/30 py-6 text-center text-sm text-gray-400 mt-20">
-        <p>© 2026 AstroBunny - Tính Thần Số Học & Rút Bài Tarot. Mọi quyền được bảo lưu.</p>
+        <p>© 2026 AstroBunny - Tính Thần số học & Rút bài Tarot. Mọi quyền được bảo lưu.</p>
       </footer>
     </div>
   );

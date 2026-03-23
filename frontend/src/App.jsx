@@ -9,6 +9,7 @@ import Booking from './pages/Booking';
 import AdminRoute from './components/routing/AdminRoute';
 import AdminLayout from './components/layout/AdminLayout';
 import AdminFeedbacks from './pages/admin/AdminFeedbacks';
+import AdminBookings from './pages/admin/AdminBookings';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminUsers from './pages/admin/AdminUsers';
 import FeedbackModal from './components/ui/FeedbackModal';
@@ -32,6 +33,7 @@ function App() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="/admin/feedbacks" element={<AdminFeedbacks />} />
+            <Route path="/admin/bookings" element={<AdminBookings />} />
           </Route>
         </Route>
       </Routes>

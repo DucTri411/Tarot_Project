@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
 const feedbackController = require('../controllers/feedbackController');
+const bookingController = require('../controllers/bookingController');
 const { verifyToken, isAdmin } = require('../middlewares/authMiddleware');
 
 // Tất cả endpoints admin đều yêu cầu Auth & Quyền Admin
@@ -27,5 +28,11 @@ router.get('/feedbacks', feedbackController.getFeedbacks);
 
 // DELETE /api/admin/feedbacks/:id
 router.delete('/feedbacks/:id', feedbackController.deleteFeedback);
+
+// GET /api/admin/bookings
+router.get('/bookings', bookingController.getAllBookings);
+
+// DELETE /api/admin/bookings/:id
+router.delete('/bookings/:id', bookingController.deleteBooking);
 
 module.exports = router;

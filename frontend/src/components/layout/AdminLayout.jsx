@@ -16,7 +16,8 @@ const AdminLayout = () => {
   const navItems = [
     { path: '/admin', label: '📊 Dashboard', exact: true },
     { path: '/admin/users', label: '👥 Quản lý người dùng' },
-    { path: '/admin/feedbacks', label: '💬 Phản hồi từ user' }
+    { path: '/admin/feedbacks', label: '💬 Phản hồi từ user' },
+    { path: '/admin/bookings', label: '📅 Quản lý đặt lịch' }
   ];
 
   return (
@@ -32,10 +33,15 @@ const AdminLayout = () => {
       {/* Sidebar */}
       <aside className={`fixed md:static inset-y-0 left-0 w-64 bg-galaxy-dark border-r border-galaxy-primary/30 flex flex-col z-30 shadow-2xl transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
         <div className="p-6 border-b border-galaxy-primary/30">
-          <Link to="/" className="text-xl font-bold bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text flex flex-col items-center">
-            <span>🐰 AstroBunny</span>
-            <span className="text-xs text-galaxy-secondary mt-1 tracking-widest uppercase">Admin Panel</span>
-          </Link>
+          <Link to="/" className="flex flex-col items-center text-xl font-bold">
+            <span className="text-4xl mb-2">🐰</span>
+            <span className="bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text">
+              AstroBunny
+            </span>
+            <span className="text-xs text-galaxy-secondary mt-1 tracking-widest uppercase font-black">
+              Admin Panel
+            </span>
+</Link>
         </div>
         <nav className="flex-1 overflow-y-auto py-4">
           <ul className="space-y-2 px-4">
