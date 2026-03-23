@@ -69,18 +69,25 @@ const TarotCardComponent = ({ drawn, onFlip, isAuth }) => {
             </div>
           </div>
 
-          {/* Overlay tên lá bài */}
-          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-            <h3 className={`text-base font-bold text-center ${drawn.reversed ? 'text-rose-300' : 'text-white'}`}>
-              {drawn.card.name}
-              {drawn.reversed && <span className="block text-xs text-rose-400 mt-1">⟲ Ngược</span>}
-            </h3>
-            <div className="flex flex-wrap justify-center gap-1.5 mt-2">
-              {drawn.card.keywords.slice(0, 3).map((kw, i) => (
-                <span key={i} className="text-[10px] sm:text-xs bg-galaxy-primary/50 text-galaxy-light px-2 py-1 rounded-md">{kw}</span>
-              ))}
-            </div>
-          </div>
+          {/* Overlay tên lá bài (Đã bỏ đi, chuyển xuống ngoài ảnh) */}
+        </div>
+      </div>
+
+      {/* Tên và Keywords ở bên dưới lá bài */}
+      <div className={`transition-[opacity,height] duration-500 ease-in-out flex flex-col items-center justify-start ${drawn.flipped ? 'opacity-100 h-auto' : 'opacity-0 h-0 overflow-hidden'}`}>
+        <div className="mt-4 px-5 py-2 border border-galaxy-light/40 bg-gradient-to-r from-galaxy-darkest via-galaxy-dark to-galaxy-darkest rounded shadow-[0_0_12px_rgba(139,92,246,0.3)] min-w-[160px] text-center">
+          <h3 className={`font-bold text-lg ${drawn.reversed ? 'text-rose-300' : 'text-white'}`}>
+            {drawn.card.name}
+            {drawn.reversed && <span className="block text-xs text-rose-400 mt-0.5">⟲ Ngược</span>}
+          </h3>
+        </div>
+        
+        <div className="flex flex-wrap justify-center gap-2 mt-3 mb-2 px-2 text-center w-full">
+          {drawn.card.keywords.map((kw, i) => (
+            <span key={i} className="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-purple-400 drop-shadow-[0_0_5px_rgba(168,85,247,0.4)] block w-full leading-tight">
+              {kw}
+            </span>
+          ))}
         </div>
       </div>
 
@@ -145,6 +152,9 @@ const Tarot = () => {
   const [drawnCards, setDrawnCards] = useState([]);
   const [isAuth, setIsAuth] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
+  const [topic, setTopic] = useState('Tổng quan');
+
+  const topics = ['Tổng quan', 'Tình yêu & Mối quan hệ', 'Sự nghiệp & Tài chính', 'Sức khỏe & Tinh thần', 'Quyết định & Định hướng'];
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -174,7 +184,7 @@ const Tarot = () => {
   };
 
   const allFlipped = drawnCards.length > 0 && drawnCards.every(c => c.flipped);
-  const synthesis = allFlipped ? generateSynthesis(drawnCards) : null;
+  const synthesis = allFlipped ? generateSynthesis(drawnCards, topic) : null;
 
   /* ── LANDING ── */
   if (phase === 'landing') {
@@ -207,6 +217,22 @@ const Tarot = () => {
               <div className="text-2xl mb-1">✨</div>
               <span className="text-xs font-bold text-galaxy-light uppercase">Tương Lai</span>
               <p className="text-[10px] text-gray-500 mt-1">Điều sắp đến</p>
+            </div>
+          </div>
+
+          {/* Chọn chủ đề */}
+          <div className="max-w-xl mx-auto mb-10 text-center">
+            <label className="block text-galaxy-light font-bold mb-4 uppercase tracking-widest text-sm">Chọn Chủ Đề Trải Bài</label>
+            <div className="flex flex-wrap justify-center gap-3">
+              {topics.map(t => (
+                <button
+                  key={t}
+                  onClick={() => setTopic(t)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${topic === t ? 'bg-galaxy-primary text-white border-galaxy-light shadow-[0_0_10px_rgba(139,92,246,0.5)]' : 'bg-white/5 text-gray-400 border-white/10 hover:bg-white/10 hover:text-white'}`}
+                >
+                  {t}
+                </button>
+              ))}
             </div>
           </div>
 
