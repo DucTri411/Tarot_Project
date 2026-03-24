@@ -24,6 +24,10 @@ Dự án Web hỗ trợ tra cứu thần số học và bốc bài Tarot hiển 
   npm run install:all
   ```
 - *Lệnh này sẽ tự động tải thư viện cho thư mục gốc, thư mục `backend` và thư mục `frontend`.*
+- Sau khi cài đặt xong, nếu Terminal hiện cảnh báo về bảo mật (vulnerabilities), hãy chạy lệnh sau tại thư mục gốc để khắc phục:
+  ```cmd
+  npm audit fix
+  ```
 
 ### Bước 4: Tạo dữ liệu mẫu database
 - Tại **thư mục gốc của dự án**, chạy lệnh để tạo các bảng dữ liệu Users:
