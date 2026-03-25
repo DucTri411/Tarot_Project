@@ -9,7 +9,23 @@ const bookingRoutes = require("./routes/booking");
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://tarot-project-three.vercel.app',
+  'https://astrobunny.io.vn',
+  'https://www.astrobunny.io.vn',
+].filter(Boolean);
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('CORS: Origin không được phép truy cập.'));
+  },
+  credentials: true
+}));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
