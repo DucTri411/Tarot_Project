@@ -148,7 +148,7 @@ const Register = () => {
                     ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/50'
                     : 'border-galaxy-primary/40 focus:border-galaxy-light focus:ring-galaxy-light'
                 }`}
-                placeholder="Mật khẩu phải khớp nhau"
+                placeholder="Nhập lại mật khẩu ở trên"
               />
               <EyeIcon visible={showConfirmPassword} onClick={() => setShowConfirmPassword(!showConfirmPassword)} />
             </div>
