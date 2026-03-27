@@ -61,7 +61,7 @@ const Home = () => {
               to="/tarot" 
               className="px-8 py-4 bg-galaxy-darkest border-2 border-galaxy-secondary inline-flex items-center justify-center rounded-xl font-bold text-lg text-white hover:bg-galaxy-primary hover:border-galaxy-light hover:shadow-[0_0_20px_rgba(104,56,141,0.6)] hover:scale-105 transition-all duration-300"
             >
-              Rút một lá bài ngẫu nhiên 🔮
+              Rút các lá bài ngẫu nhiên 🔮
             </Link>
           </div>
 

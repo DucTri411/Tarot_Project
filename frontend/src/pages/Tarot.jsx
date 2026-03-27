@@ -4,9 +4,7 @@ import { drawThreeCards, generateSynthesis } from '../utils/tarotData';
 import { getDetailForMajor, SUIT_THEMES } from '../utils/tarotDetails';
 import { TOPIC_DETAILS } from '../utils/tarotTopicDetails';
 
-/* ──────────────────────────────────────────── */
-/*  BlurOverlay: Lớp phủ yêu cầu đăng nhập     */
-/* ──────────────────────────────────────────── */
+/* Lớp phủ yêu cầu đăng nhập */
 const BlurOverlay = () => (
   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 bg-galaxy-darkest/60 backdrop-blur-[2px] rounded-2xl border border-galaxy-primary/30">
     <div className="bg-galaxy-dark/90 p-6 rounded-xl border border-galaxy-secondary shadow-2xl shadow-galaxy-primary/20 text-center max-w-sm">
@@ -23,9 +21,7 @@ const BlurOverlay = () => (
   </div>
 );
 
-/* ──────────────────────────────────────────── */
-/*  TarotCardComponent: Lá bài lật được         */
-/* ──────────────────────────────────────────── */
+/* TarotCardComponent: Lá bài lật được */
 const TarotCardComponent = ({ drawn, onFlip, isAuth, topic }) => {
   const posLabels = { past: 'Quá Khứ', present: 'Hiện Tại', future: 'Tương Lai' };
   const posIcons = { past: '⏳', present: '🔮', future: '✨' };
@@ -190,9 +186,7 @@ const TarotCardComponent = ({ drawn, onFlip, isAuth, topic }) => {
   );
 };
 
-/* ──────────────────────────────────────────── */
-/*  Main Tarot Page Component                    */
-/* ──────────────────────────────────────────── */
+/* Main Tarot Page Component */
 const Tarot = () => {
   const [phase, setPhase] = useState('landing'); // landing | shuffle | spread
   const [drawnCards, setDrawnCards] = useState([]);

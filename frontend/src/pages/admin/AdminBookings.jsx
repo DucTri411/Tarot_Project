@@ -51,7 +51,7 @@ const AdminBookings = () => {
 
   return (
     <div className="animate-fade-in">
-      <h2 className="text-3xl font-bold text-white mb-2">Quản Lý Đặt Lịch</h2>
+      <h2 className="text-3xl font-bold text-white mb-2">Quản lý đặt lịch</h2>
       <p className="text-gray-400 text-sm mb-8">Danh sách khách hàng đăng ký tư vấn riêng.</p>
 
       {bookings.length === 0 ? (

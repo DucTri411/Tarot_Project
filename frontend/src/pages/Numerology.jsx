@@ -68,10 +68,10 @@ const Numerology = () => {
         
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text mb-4">
-            Báo cáo thần số học toàn diện
+            Luận giải thần số học toàn diện
           </h1>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Khám phá 10+ chỉ số chuyên sâu, biểu đồ ngày sinh và chu kỳ vận mệnh của bạn theo trường phái Pythagoras nguyên thủy.
+            Khám phá các chỉ số chuyên sâu, biểu đồ ngày sinh và chu kỳ vận mệnh của bạn theo trường phái Pythagoras nguyên thủy.
           </p>
         </div>
 

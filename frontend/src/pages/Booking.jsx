@@ -145,14 +145,22 @@ const Booking = () => {
             {/* Time */}
             <div>
               <label className="block text-gray-400 text-sm font-medium mb-2">Giờ mong muốn</label>
-              <input 
-                type="time" 
+              <select
                 name="time"
                 value={formData.time}
                 onChange={handleChange}
-                className="w-full bg-galaxy-darkest border border-galaxy-primary/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-galaxy-light focus:ring-1 focus:ring-galaxy-light transition-all"
-                style={{ colorScheme: 'dark' }}
-              />
+                className="w-full bg-galaxy-darkest border border-galaxy-primary/40 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-galaxy-light focus:ring-1 focus:ring-galaxy-light transition-all appearance-none"
+              >
+                <option value="">-- Chọn giờ --</option>
+                {Array.from({ length: 16 }, (_, i) => {
+                  const hour = (i + 8).toString().padStart(2, '0');
+                  return (
+                    <option key={hour} value={`${hour}:00`}>
+                      {`${hour}:00`}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
           </div>
 
@@ -174,7 +182,7 @@ const Booking = () => {
             disabled={loading}
             className="w-full py-4 mt-2 bg-gradient-to-r from-galaxy-primary to-galaxy-secondary hover:scale-[1.02] text-white font-bold text-lg rounded-xl shadow-lg shadow-galaxy-primary/30 transition-all duration-300 disabled:opacity-50"
           >
-            {loading ? 'Đang xử lý...' : 'Đăng Ký Đặt Lịch'}
+            {loading ? 'Đang xử lý...' : 'Đăng ký đặt lịch'}
           </button>
         </form>
       </div>

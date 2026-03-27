@@ -60,7 +60,7 @@ const AdminDashboard = () => {
       <div className="bg-galaxy-dark/50 border border-galaxy-primary/30 p-8 rounded-2xl">
         <h2 className="text-xl font-bold text-white mb-4">Chào mừng trở lại trạm điều khiển AstroBunny 🐰</h2>
         <p className="text-gray-300 leading-relaxed max-w-2xl">
-          Đây là bảng điều khiển dành riêng cho nhà quản trị. Tại đây, bạn có thể theo dõi sự phát triển của hệ thống, quản lý người dùng, phân quyền truy cập và kiểm soát các chức năng nâng cao (Sắp ra mắt: Quản lý Lead, Lịch sử bói bài, Thống kê doanh thu).
+          Đây là bảng điều khiển dành riêng cho nhà quản trị. Tại đây, bạn có thể theo dõi sự phát triển của hệ thống, quản lý người dùng, phân quyền truy cập và kiểm soát các chức năng nâng cao.
         </p>
       </div>
     </div>

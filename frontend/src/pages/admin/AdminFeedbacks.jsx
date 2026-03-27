@@ -40,7 +40,7 @@ const AdminFeedbacks = () => {
 
   return (
     <div className="animate-fade-in">
-      <h2 className="text-3xl font-bold text-white mb-2">Phản Hồi Từ Người Dùng</h2>
+      <h2 className="text-3xl font-bold text-white mb-2">Phản hồi từ người dùng</h2>
       <p className="text-gray-400 text-sm mb-8">Đọc và quản lý những đóng góp từ phía người dùng.</p>
 
       {feedbacks.length === 0 ? (
