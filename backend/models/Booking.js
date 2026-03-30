@@ -17,6 +17,31 @@ class Booking {
         return rows;
     }
 
+    static async getByEmail(email) {
+        const query = 'SELECT * FROM bookings WHERE email = ? ORDER BY created_at DESC';
+        const [rows] = await db.query(query, [email]);
+        return rows;
+    }
+
+    static async updateByIdAndEmail(id, email, updateData) {
+        const { date, time, notes } = updateData;
+        const query = 'UPDATE bookings SET date = ?, time = ?, notes = ? WHERE id = ? AND email = ?';
+        const [result] = await db.query(query, [date, time, notes, id, email]);
+        return result;
+    }
+
+    static async updateStatus(id, email, status) {
+        const query = 'UPDATE bookings SET status = ? WHERE id = ? AND email = ?';
+        const [result] = await db.query(query, [status, id, email]);
+        return result;
+    }
+
+    static async deleteByIdAndEmail(id, email) {
+        const query = 'DELETE FROM bookings WHERE id = ? AND email = ?';
+        const [result] = await db.query(query, [id, email]);
+        return result;
+    }
+
     static async delete(id) {
         const query = 'DELETE FROM bookings WHERE id = ?';
         const [result] = await db.query(query, [id]);

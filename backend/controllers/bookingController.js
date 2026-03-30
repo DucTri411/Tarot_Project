@@ -1,4 +1,5 @@
 const Booking = require('../models/Booking');
+const User = require('../models/User');
 
 exports.submitBooking = async (req, res) => {
     try {
@@ -34,5 +35,61 @@ exports.deleteBooking = async (req, res) => {
     } catch (error) {
         console.error("Error deleting booking:", error);
         res.status(500).json({ message: "Lỗi khi xóa đặt lịch." });
+    }
+};
+
+exports.getMyBookings = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId);
+        if (!user) return res.status(404).json({ message: "Không tìm thấy user" });
+
+        const bookings = await Booking.getByEmail(user.email);
+        res.json(bookings);
+    } catch (error) {
+        console.error("Error fetching my bookings:", error);
+        res.status(500).json({ message: "Lỗi khi lấy danh sách đặt lịch của tôi." });
+    }
+};
+
+exports.updateMyBooking = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { date, time, notes } = req.body;
+        const user = await User.findById(req.userId);
+        if (!user) return res.status(404).json({ message: "Không tìm thấy user" });
+
+        await Booking.updateByIdAndEmail(id, user.email, { date, time, notes });
+        res.json({ message: "Cập nhật lịch thành công." });
+    } catch (error) {
+        console.error("Error updating my booking:", error);
+        res.status(500).json({ message: "Lỗi khi cập nhật đặt lịch." });
+    }
+};
+
+exports.payMyBooking = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(req.userId);
+        if (!user) return res.status(404).json({ message: "Không tìm thấy user" });
+
+        await Booking.updateStatus(id, user.email, 'Đã thanh toán');
+        res.json({ message: "Thanh toán thành công. Chúng mình sẽ gửi mail xác nhận đến sớm nha" });
+    } catch (error) {
+        console.error("Error paying my booking:", error);
+        res.status(500).json({ message: "Lỗi khi thanh toán." });
+    }
+};
+
+exports.deleteMyBooking = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(req.userId);
+        if (!user) return res.status(404).json({ message: "Không tìm thấy user" });
+
+        await Booking.deleteByIdAndEmail(id, user.email);
+        res.json({ message: "Đã hủy lịch đặt." });
+    } catch (error) {
+        console.error("Error deleting my booking:", error);
+        res.status(500).json({ message: "Lỗi khi hủy đặt lịch." });
     }
 };

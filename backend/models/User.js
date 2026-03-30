@@ -14,6 +14,11 @@ const User = {
     return rows;
   },
 
+  findById: async (id) => {
+    const [rows] = await db.query("SELECT * FROM users WHERE id = ?", [id]);
+    return rows[0];
+  },
+
   create: async (username, email, passwordHash, role) => {
     const [result] = await db.query(
       "INSERT INTO users (username, email, password_hash, role) VALUES (?, ?, ?, ?)",

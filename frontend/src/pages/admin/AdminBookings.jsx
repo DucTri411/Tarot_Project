@@ -75,6 +75,7 @@ const AdminBookings = () => {
                   <th className="p-4 font-semibold">Khách hàng</th>
                   <th className="p-4 font-semibold">Dịch vụ</th>
                   <th className="p-4 font-semibold">Thời gian hẹn</th>
+                  <th className="p-4 font-semibold">Trạng thái</th>
                   <th className="p-4 font-semibold">Ghi chú</th>
                   <th className="p-4 font-semibold text-right">Thao tác</th>
                 </tr>
@@ -104,7 +105,16 @@ const AdminBookings = () => {
                       <div className="text-xs text-gray-500">{b.time || '--:--'}</div>
                     </td>
                     <td className="p-4">
-                      <p className="text-xs text-gray-400 max-w-xs truncate" title={b.notes}>
+                      <span className={`px-2 py-1 text-[10px] font-bold rounded-full border whitespace-nowrap ${
+                        (b.status === 'Đã thanh toán')
+                          ? 'bg-emerald-500/10 border-emerald-500 text-emerald-400'
+                          : 'bg-rose-500/10 border-rose-500 text-rose-400'
+                      }`}>
+                        {b.status === 'pending' ? 'Chưa thanh toán' : (b.status || 'Chưa thanh toán')}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <p className="text-xs text-gray-400 max-w-xs whitespace-pre-wrap break-words">
                         {b.notes || 'Không có ghi chú'}
                       </p>
                     </td>
