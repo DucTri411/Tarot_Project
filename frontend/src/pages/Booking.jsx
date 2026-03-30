@@ -17,6 +17,7 @@ const Booking = () => {
   const [myBookings, setMyBookings] = useState([]);
   const [loadingBookings, setLoadingBookings] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [showForm, setShowForm] = useState(true);
   const [editingId, setEditingId] = useState(null);
   const [editFormData, setEditFormData] = useState({});
@@ -51,8 +52,10 @@ const Booking = () => {
       fetchMyBookings(token);
       resetForm();
     } else {
+      setIsAuth(false);
       setShowForm(true);
     }
+    setIsAuthLoading(false);
   }, []);
 
   const fetchMyBookings = async (token) => {
@@ -143,6 +146,37 @@ const Booking = () => {
       setLoading(false);
     }
   };
+
+  if (isAuthLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[calc(100vh-140px)]">
+        <p className="text-galaxy-light animate-pulse text-lg font-medium">Đang kiểm tra kết nối vũ trụ...</p>
+      </div>
+    );
+  }
+
+  if (!isAuth) {
+    return (
+      <div className="flex items-center justify-center min-h-[calc(100vh-140px)] px-4 py-12">
+        <div className="bg-galaxy-dark/60 backdrop-blur-md p-10 rounded-3xl shadow-2xl border border-galaxy-primary/30 w-full max-w-lg text-center relative overflow-hidden animate-fade-in-up">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-galaxy-secondary/20 rounded-full blur-[80px] -z-10"></div>
+          <div className="text-6xl mb-6">🔒</div>
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text mb-4">
+            Vui lòng đăng nhập
+          </h2>
+          <p className="text-gray-300 mb-8 leading-relaxed">
+            Bạn cần có tài khoản để tiến hành đặt lịch, quản lý lịch hẹn cá nhân và trải nghiệm dịch vụ trọn vẹn nhất tại AstroBunny.
+          </p>
+          <button 
+            onClick={() => window.location.href = '/login'}
+            className="px-8 py-3 bg-gradient-to-r from-galaxy-primary to-galaxy-secondary hover:scale-105 text-white font-bold rounded-xl shadow-lg shadow-galaxy-primary/20 transition-all inline-block"
+          >
+            Đăng nhập ngay
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (submitted && !isAuth) {
     return (
