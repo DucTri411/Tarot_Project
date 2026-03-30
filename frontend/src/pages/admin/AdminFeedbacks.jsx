@@ -49,7 +49,7 @@ const AdminFeedbacks = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {feedbacks.map((f) => (
+          {[...feedbacks].sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).map((f, index) => (
             <div key={f.id} className="bg-galaxy-dark border border-galaxy-primary/30 rounded-xl p-6 shadow-lg shadow-galaxy-primary/5 hover:border-galaxy-light transition-colors relative group">
               <button 
                 onClick={() => handleDelete(f.id)}
@@ -62,9 +62,14 @@ const AdminFeedbacks = () => {
               </button>
               
               <div className="flex justify-between items-start mb-4 pr-6">
-                <div>
-                  <h3 className="text-lg font-bold text-white">{f.name}</h3>
-                  <p className="text-xs text-galaxy-light">{f.email}</p>
+                <div className="flex gap-3 items-center">
+                  <div className="bg-galaxy-primary/20 text-galaxy-light font-bold w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 border border-galaxy-primary/30">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-white leading-tight">{f.name}</h3>
+                    <p className="text-xs text-galaxy-light">{f.email}</p>
+                  </div>
                 </div>
                 <div className="flex text-yellow-400">
                   {[...Array(5)].map((_, i) => (

@@ -95,7 +95,7 @@ const AdminUsers = () => {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-galaxy-dark border-b border-galaxy-primary/30 text-gray-300 text-sm">
-                <th className="p-4 font-semibold">ID</th>
+                <th className="p-4 font-semibold text-center w-12">STT</th>
                 <th className="p-4 font-semibold">Tên hiển thị</th>
                 <th className="p-4 font-semibold">Email</th>
                 <th className="p-4 font-semibold">Vai trò (Role)</th>
@@ -104,9 +104,9 @@ const AdminUsers = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-galaxy-primary/20">
-              {users.map(user => (
+              {[...users].sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).map((user, index) => (
                 <tr key={user.id} className="hover:bg-galaxy-primary/10 transition-colors">
-                  <td className="p-4 text-gray-400 text-sm">#{user.id}</td>
+                  <td className="p-4 text-gray-400 text-sm text-center font-bold">{index + 1}</td>
                   <td className="p-4 font-medium text-white">{user.username}</td>
                   <td className="p-4 text-gray-300">{user.email}</td>
                   <td className="p-4">

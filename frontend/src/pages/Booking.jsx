@@ -69,7 +69,7 @@ const Booking = () => {
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-galaxy-primary/20 rounded-full blur-[80px] -z-10"></div>
         
         <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text mb-4">
+          <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text mb-4 pb-2 leading-tight">
             Đặt lịch xem riêng
           </h1>
           <p className="text-gray-400">
@@ -121,11 +121,21 @@ const Booking = () => {
               onChange={handleChange}
               className="w-full bg-galaxy-darkest border border-galaxy-primary/40 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-galaxy-light focus:ring-1 focus:ring-galaxy-light transition-all appearance-none"
             >
-              <option value="thanso">Tư vấn Thần Số Học (60 phút) - Mở khóa tiềm năng</option>
               <option value="tarot">Trải bài Tarot (45 phút) - Giải đáp thắc mắc cụ thể</option>
-              <option value="combo">Combo Thần Số Học & Tarot (90 phút) - Chuyên sâu</option>
+              <option value="thanso">Tư vấn Thần số học (60 phút) - Mở khóa tiềm năng</option>
+              <option value="combo">Combo Thần số học & Tarot (90 phút) - Chuyên sâu</option>
               <option value="tham-van-chung">Tham vấn tâm linh chung</option>
             </select>
+            
+            {['tarot', 'thanso', 'combo'].includes(formData.service) && (
+              <div className="mt-3 p-3 bg-galaxy-primary/10 border border-galaxy-primary/30 rounded-xl flex justify-between items-center transition-all">
+                <span className="text-gray-300 text-sm">✨ Phí dịch vụ:</span>
+                <span className="text-galaxy-light font-bold text-lg">
+                  {formData.service === 'tarot' ? '100.000 VNĐ' : 
+                   formData.service === 'thanso' ? '150.000 VNĐ' : '200.000 VNĐ'}
+                </span>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -145,22 +155,40 @@ const Booking = () => {
             {/* Time */}
             <div>
               <label className="block text-gray-400 text-sm font-medium mb-2">Giờ mong muốn</label>
-              <select
-                name="time"
-                value={formData.time}
-                onChange={handleChange}
-                className="w-full bg-galaxy-darkest border border-galaxy-primary/40 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-galaxy-light focus:ring-1 focus:ring-galaxy-light transition-all appearance-none"
-              >
-                <option value="">-- Chọn giờ --</option>
-                {Array.from({ length: 16 }, (_, i) => {
-                  const hour = (i + 8).toString().padStart(2, '0');
-                  return (
-                    <option key={hour} value={`${hour}:00`}>
-                      {`${hour}:00`}
-                    </option>
-                  );
-                })}
-              </select>
+              <div className="flex gap-2 w-full">
+                <select
+                  value={formData.time ? formData.time.split(':')[0] : ''}
+                  onChange={(e) => {
+                    const h = e.target.value;
+                    const m = formData.time ? formData.time.split(':')[1] : '00';
+                    handleChange({ target: { name: 'time', value: h ? `${h}:${m}` : '' } });
+                  }}
+                  className="w-1/2 bg-galaxy-darkest border border-galaxy-primary/40 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-galaxy-light focus:ring-1 focus:ring-galaxy-light transition-all appearance-none"
+                >
+                  <option value="">Giờ</option>
+                  {Array.from({ length: 16 }, (_, i) => {
+                    const hour = (i + 8).toString().padStart(2, '0');
+                    return <option key={hour} value={hour}>{hour}</option>;
+                  })}
+                </select>
+                
+                <span className="flex items-center text-gray-400 font-bold">:</span>
+
+                <select
+                  value={formData.time ? formData.time.split(':')[1] : ''}
+                  onChange={(e) => {
+                    const m = e.target.value;
+                    const h = formData.time ? formData.time.split(':')[0] : '08';
+                    handleChange({ target: { name: 'time', value: m ? `${h}:${m}` : h + ':' + m } });
+                  }}
+                  className="w-1/2 bg-galaxy-darkest border border-galaxy-primary/40 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-galaxy-light focus:ring-1 focus:ring-galaxy-light transition-all appearance-none"
+                >
+                  <option value="">Phút</option>
+                  {['00', '15', '30', '45'].map(minute => (
+                    <option key={minute} value={minute}>{minute}</option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
 

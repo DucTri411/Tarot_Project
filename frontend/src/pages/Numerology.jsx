@@ -67,7 +67,7 @@ const Numerology = () => {
       <div className="w-full max-w-5xl bg-galaxy-dark/40 border border-galaxy-primary/30 p-6 md:p-10 rounded-3xl shadow-2xl shadow-galaxy-primary/10">
         
         <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text mb-4">
+          <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-galaxy-light to-white text-transparent bg-clip-text mb-4 pb-2 leading-tight">
             Luận giải thần số học toàn diện
           </h1>
           <p className="text-gray-400 max-w-2xl mx-auto">

@@ -46,6 +46,13 @@ const AdminBookings = () => {
     'tham-van-chung': 'Tham vấn chung'
   };
 
+  const priceMap = {
+    'thanso': '150.000 VNĐ',
+    'tarot': '100.000 VNĐ',
+    'combo': '200.000 VNĐ',
+    'tham-van-chung': ''
+  };
+
   if (loading) return <div className="text-center py-20 text-galaxy-light animate-pulse">Đang tải dữ liệu...</div>;
   if (error) return <div className="text-red-400 bg-red-400/10 p-4 rounded-xl border border-red-500/30 text-center">{error}</div>;
 
@@ -64,6 +71,7 @@ const AdminBookings = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-galaxy-dark border-b border-galaxy-primary/30 text-gray-300 text-xs uppercase tracking-wider">
+                  <th className="p-4 font-semibold text-center w-12">STT</th>
                   <th className="p-4 font-semibold">Khách hàng</th>
                   <th className="p-4 font-semibold">Dịch vụ</th>
                   <th className="p-4 font-semibold">Thời gian hẹn</th>
@@ -72,16 +80,24 @@ const AdminBookings = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-galaxy-primary/10">
-                {bookings.map((b) => (
+                {[...bookings].sort((a,b) => new Date(a.created_at || a.date) - new Date(b.created_at || b.date)).map((b, index) => (
                   <tr key={b.id} className="hover:bg-galaxy-primary/5 transition-colors">
+                    <td className="p-4 text-center text-gray-400 font-bold text-sm">{index + 1}</td>
                     <td className="p-4">
                       <div className="font-bold text-white">{b.name}</div>
                       <div className="text-xs text-galaxy-light">{b.email}</div>
                     </td>
                     <td className="p-4">
-                      <span className="px-2 py-1 bg-galaxy-primary/20 text-galaxy-light text-[10px] font-bold rounded uppercase">
-                        {serviceMap[b.service] || b.service}
-                      </span>
+                      <div className="flex flex-col gap-1 items-start">
+                        <span className="px-2 py-1 bg-galaxy-primary/20 text-galaxy-light text-[10px] font-bold rounded uppercase">
+                          {serviceMap[b.service] || b.service}
+                        </span>
+                        {priceMap[b.service] && (
+                          <span className="text-xs text-white font-bold bg-white/10 px-2 py-0.5 rounded">
+                            {priceMap[b.service]}
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="p-4 text-gray-300 text-sm">
                       <div>{new Date(b.date).toLocaleDateString('vi-VN')}</div>
